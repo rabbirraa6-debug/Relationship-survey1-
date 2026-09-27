@@ -4,15 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Relationship Quiz — Girls Quiz 1</title>
+<title>Relationship Quiz</title>
 
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 * {
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
 }
 
 html {
@@ -20,69 +22,73 @@ html {
 }
 
 body {
-    margin: 0;
-    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background:
-        radial-gradient(circle at top left, rgba(255, 105, 180, .14), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(100, 149, 237, .13), transparent 35%),
-        #f8f9fc;
-    color: #171722;
+    font-family: Inter, Arial, sans-serif;
+    background: #f7f9fc;
+    color: #172033;
     min-height: 100vh;
     user-select: none;
 }
 
 input,
-button {
-    font: inherit;
-}
-
-input {
+textarea,
+select {
     user-select: text;
 }
 
+button,
+input {
+    font: inherit;
+}
+
 button {
-    border: 0;
     cursor: pointer;
+    border: 0;
 }
 
-.page {
+.app {
     min-height: 100vh;
-    padding-bottom: 90px;
 }
 
-/* SIDEBAR */
+
+/* ================= SIDEBAR ================= */
 
 .sidebar {
     position: fixed;
     left: 0;
     top: 0;
-    width: 240px;
-    height: 100vh;
-    background: rgba(255,255,255,.94);
-    backdrop-filter: blur(18px);
-    border-right: 1px solid #ececf3;
-    padding: 25px 16px;
-    z-index: 50;
+    bottom: 0;
+    width: 245px;
+    background: #ffffff;
+    border-right: 1px solid #e8ecf3;
+    padding: 24px 15px;
+    z-index: 100;
 }
 
 .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 11px;
+    padding: 5px 12px 28px;
     font-weight: 800;
-    font-size: 19px;
-    margin-bottom: 32px;
+    font-size: 18px;
 }
 
 .logo-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
+    width: 39px;
+    height: 39px;
+    border-radius: 13px;
+    background: linear-gradient(135deg,#4b8cff,#ff72b6);
+    color: white;
     display: grid;
     place-items: center;
-    color: white;
-    background: linear-gradient(135deg, #ff4fa3, #6d8cff);
-    box-shadow: 0 8px 25px rgba(255,79,163,.25);
+}
+
+.nav-title {
+    font-size: 10px;
+    font-weight: 800;
+    color: #9ba4b4;
+    letter-spacing: 1.5px;
+    padding: 0 13px 9px;
 }
 
 .nav-item {
@@ -90,319 +96,756 @@ button {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 13px 14px;
-    margin-bottom: 7px;
-    border-radius: 13px;
-    color: #6e6e7b;
+    padding: 12px 13px;
+    border-radius: 12px;
+    color: #697386;
     background: transparent;
-    text-align: left;
+    margin-bottom: 5px;
     transition: .2s;
+    text-align: left;
 }
 
 .nav-item:hover {
-    background: #f7f7fb;
-    color: #252531;
+    background: #f3f6fb;
+    color: #356edc;
 }
 
 .nav-item.active {
-    background: linear-gradient(
-        135deg,
-        rgba(255,79,163,.12),
-        rgba(109,140,255,.10)
-    );
-    color: #ef3d91;
+    background: #edf4ff;
+    color: #3274e8;
     font-weight: 700;
 }
 
-/* MAIN */
-
-.main {
-    margin-left: 240px;
-    padding: 35px;
-    max-width: 1150px;
+.nav-item i {
+    width: 18px;
 }
 
-.topbar {
+
+/* ================= MAIN ================= */
+
+.main {
+    margin-left: 245px;
+    min-height: 100vh;
+    padding: 30px;
+}
+
+.page {
+    display: none;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.page.active {
+    display: block;
+}
+
+.page-header {
+    margin-bottom: 25px;
+}
+
+.page-header h1 {
+    font-size: clamp(27px,5vw,40px);
+    margin-bottom: 7px;
+}
+
+.page-header p {
+    color: #758095;
+}
+
+
+/* ================= HOME ================= */
+
+.hero {
+    min-height: 440px;
+    border-radius: 30px;
+    padding: 50px;
+    background:
+        radial-gradient(circle at 85% 15%,rgba(255,116,183,.23),transparent 28%),
+        radial-gradient(circle at 15% 85%,rgba(73,137,255,.2),transparent 30%),
+        white;
+    border: 1px solid #e8edf5;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 25px;
+}
+
+.hero-content {
+    max-width: 700px;
 }
 
 .badge {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    padding: 7px 11px;
-    border-radius: 999px;
-    background: rgba(255,79,163,.09);
-    color: #ed3c91;
+    padding: 8px 13px;
+    border-radius: 30px;
+    background: #f0f5ff;
+    color: #477ee0;
     font-size: 12px;
     font-weight: 800;
+    margin-bottom: 18px;
 }
 
 .hero h1 {
-    margin: 12px 0 8px;
-    font-size: clamp(30px, 5vw, 48px);
-    line-height: 1.05;
-    letter-spacing: -1.5px;
+    font-size: clamp(38px,7vw,68px);
+    line-height: .98;
+    letter-spacing: -2px;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg,#367af0,#e65eaa);
+    -webkit-background-clip: text;
+    color: transparent;
 }
 
 .hero p {
-    color: #777785;
-    max-width: 650px;
-    line-height: 1.6;
-    margin: 0;
+    color: #697386;
+    font-size: 17px;
+    line-height: 1.7;
+    margin: 20px 0 27px;
+    max-width: 600px;
 }
 
-.quiz-card {
-    margin-top: 28px;
-    background: rgba(255,255,255,.94);
-    border: 1px solid #ededf4;
-    border-radius: 24px;
-    padding: 28px;
-    box-shadow:
-        0 20px 60px rgba(30,30,60,.07),
-        0 0 50px rgba(255,79,163,.05);
-}
-
-.progress-wrap {
-    margin-bottom: 28px;
-}
-
-.progress-info {
-    display: flex;
-    justify-content: space-between;
+.btn {
+    display: inline-flex;
     align-items: center;
-    margin-bottom: 9px;
-    color: #777785;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.progress-bar {
-    height: 8px;
-    background: #f0f0f5;
-    border-radius: 99px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    width: 4%;
-    border-radius: inherit;
-    background: linear-gradient(90deg, #ff4fa3, #8c7bff);
-    transition: width .3s ease;
-}
-
-.question-number {
-    color: #ef3d91;
-    font-weight: 800;
-    font-size: 14px;
-    margin-bottom: 9px;
-}
-
-.question {
-    font-size: clamp(21px, 4vw, 29px);
-    line-height: 1.3;
-    font-weight: 800;
-    letter-spacing: -.5px;
-    margin-bottom: 22px;
-}
-
-.options {
-    display: grid;
-    gap: 12px;
-}
-
-.option {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    padding: 15px;
-    border: 1px solid #e8e8ef;
-    background: white;
-    border-radius: 15px;
-    text-align: left;
+    justify-content: center;
+    gap: 9px;
+    border-radius: 13px;
+    padding: 13px 18px;
+    font-weight: 750;
     transition: .2s;
 }
 
-.option:hover {
-    border-color: #ff8ac1;
-    transform: translateY(-1px);
+.btn:hover {
+    transform: translateY(-2px);
 }
 
-.option-letter {
-    flex: 0 0 38px;
-    height: 38px;
-    border-radius: 11px;
+.btn-primary {
+    background: linear-gradient(135deg,#397df2,#5c94f8);
+    color: white;
+    box-shadow: 0 10px 25px rgba(57,125,242,.2);
+}
+
+.btn-pink {
+    background: linear-gradient(135deg,#e95eaa,#ff83c4);
+    color: white;
+}
+
+.btn-dark {
+    background: #29203c;
+    color: white;
+}
+
+
+/* ================= CARDS ================= */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 17px;
+    margin-top: 20px;
+}
+
+.info-card {
+    padding: 23px;
+    background: white;
+    border: 1px solid #e8ecf3;
+    border-radius: 20px;
+}
+
+.info-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
     display: grid;
     place-items: center;
-    background: #f6f6fa;
-    color: #656574;
-    font-weight: 800;
+    margin-bottom: 15px;
 }
 
-.option-text {
-    color: #30303b;
-    line-height: 1.4;
-    font-weight: 600;
+.info-card h3 {
+    margin-bottom: 7px;
 }
 
-.option.selected {
-    border-color: #ff4fa3;
-    background: linear-gradient(
-        135deg,
-        rgba(255,79,163,.08),
-        rgba(140,123,255,.06)
-    );
-}
-
-.option.selected .option-letter {
-    color: white;
-    background: linear-gradient(135deg, #ff4fa3, #8c7bff);
-}
-
-.next-btn {
-    width: 100%;
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 14px;
-    color: white;
-    background: linear-gradient(135deg, #ff4fa3, #756eff);
-    font-weight: 800;
-    box-shadow: 0 10px 25px rgba(255,79,163,.20);
-    transition: .2s;
-}
-
-.next-btn:hover {
-    transform: translateY(-1px);
-}
-
-.next-btn:disabled {
-    opacity: .45;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* NAME */
-
-.name-box {
-    margin-top: 25px;
-}
-
-.name-box label {
-    display: block;
+.info-card p {
+    color: #788397;
     font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* ================= SURVEY ================= */
+
+.survey-page {
+    min-height: calc(100vh - 60px);
+}
+
+.survey-shell {
+    border-radius: 27px;
+    padding: 28px;
+    background: white;
+    border: 1px solid #e8ecf3;
+}
+
+.girls-page .survey-shell {
+    background:
+        radial-gradient(circle at 80% 0%,rgba(255,88,174,.18),transparent 30%),
+        linear-gradient(145deg,#fff,#fff5fb);
+    border-color: #ffd5e9;
+}
+
+.boys-page .survey-shell {
+    background:
+        radial-gradient(circle at 80% 0%,rgba(125,74,220,.2),transparent 30%),
+        linear-gradient(145deg,#181321,#251b34);
+    color: white;
+    border-color: #3b2c52;
+}
+
+.name-section {
+    margin-bottom: 27px;
+}
+
+.name-section label {
+    display: block;
+    font-size: 13px;
     font-weight: 800;
-    margin-bottom: 9px;
+    margin-bottom: 8px;
 }
 
 .name-input {
     width: 100%;
-    padding: 15px 16px;
-    border: 1px solid #e5e5ed;
-    border-radius: 14px;
+    padding: 15px;
+    border-radius: 13px;
+    border: 1px solid #dfe5ef;
     outline: none;
     background: white;
-    color: #22222d;
 }
 
 .name-input:focus {
-    border-color: #ff5aa9;
-    box-shadow: 0 0 0 4px rgba(255,90,169,.10);
+    border-color: #6c98ed;
+    box-shadow: 0 0 0 4px rgba(79,134,238,.1);
 }
 
-/* RESULT */
+.progress-wrap {
+    margin-bottom: 27px;
+}
 
-.result {
-    text-align: center;
+.progress-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 800;
+    color: #8490a3;
+    margin-bottom: 8px;
+}
+
+.progress {
+    height: 7px;
+    border-radius: 20px;
+    background: #e9edf4;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 4%;
+    background: linear-gradient(90deg,#4385f4,#ec67b1);
+    transition: .3s;
+}
+
+.question {
     display: none;
 }
 
-.result-icon {
-    width: 75px;
-    height: 75px;
-    margin: 0 auto 15px;
-    border-radius: 25px;
+.question.active {
+    display: block;
+}
+
+.question-number {
+    font-size: 12px;
+    color: #8791a4;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.question h2 {
+    font-size: clamp(20px,4vw,29px);
+    line-height: 1.35;
+    margin-bottom: 21px;
+}
+
+.options {
+    display: grid;
+    gap: 11px;
+}
+
+.option {
+    width: 100%;
+    text-align: left;
+    padding: 16px;
+    border-radius: 15px;
+    border: 1px solid #e2e7ef;
+    background: #fafbfd;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: .2s;
+}
+
+.option:hover {
+    border-color: #80a9ee;
+    background: #f3f7ff;
+}
+
+.option.selected {
+    border-color: #4d89ee;
+    background: #edf4ff;
+    box-shadow: 0 0 0 2px rgba(77,137,238,.08);
+}
+
+.option-letter {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    border-radius: 10px;
     display: grid;
     place-items: center;
-    color: white;
-    background: linear-gradient(135deg, #ff4fa3, #756eff);
-    box-shadow: 0 15px 35px rgba(255,79,163,.25);
-}
-
-.score {
-    font-size: 68px;
-    font-weight: 900;
-    line-height: 1;
-    background: linear-gradient(135deg, #ff4fa3, #756eff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
-.score-label {
-    color: #777785;
-    margin-top: 7px;
-}
-
-.result-title {
-    margin-top: 20px;
-    font-size: 25px;
-    font-weight: 900;
-}
-
-.result-message {
-    color: #777785;
-    margin: 8px auto 25px;
-    max-width: 480px;
-}
-
-.rank-box {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    padding: 13px 18px;
-    border-radius: 14px;
-    background: #f8f8fc;
+    background: #edf0f5;
+    font-size: 12px;
     font-weight: 800;
+}
+
+.option.selected .option-letter {
+    background: #4b85ed;
+    color: white;
+}
+
+.question-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+
+/* ================= QUIZ BOXES ================= */
+
+.quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 14px;
+}
+
+.quiz-box {
+    background: white;
+    border: 1px solid #e8ecf3;
+    border-radius: 18px;
+    padding: 17px;
+    transition: .2s;
+}
+
+.quiz-box:hover {
+    transform: translateY(-2px);
+    border-color: #cbdcfb;
+    box-shadow: 0 9px 25px rgba(40,70,120,.07);
+}
+
+.girls-quiz-grid .quiz-box {
+    border-color: #f2dce8;
+}
+
+.boys-quiz-grid .quiz-box {
+    background: #21182d;
+    border-color: #3b2c52;
+    color: white;
+}
+
+.quiz-number {
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 4px;
+}
+
+.quiz-status {
+    color: #8993a4;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 13px;
+}
+
+.boys-quiz-grid .quiz-status {
+    color: #a99bb8;
+}
+
+.quiz-actions {
+    display: flex;
+    gap: 7px;
+}
+
+.quiz-actions .btn {
+    flex: 1;
+    padding: 9px 7px;
+    font-size: 11px;
+}
+
+.quiz-actions .btn-ranking {
+    background: #f1f4f9;
+    color: #667084;
+}
+
+.boys-quiz-grid .btn-ranking {
+    background: #342744;
+    color: #c1b1d2;
+}
+
+
+/* ================= RESULT ================= */
+
+.result-wrap {
+    display: none;
+    justify-content: center;
+}
+
+.result-wrap.show {
+    display: flex;
+}
+
+.result-card {
+    width: min(100%,440px);
+    padding: 28px 22px;
+    background: white;
+    border-radius: 25px;
+    border: 1px solid #e8ecf3;
+    text-align: center;
+}
+
+.heart-line {
+    color: #ef6ab0;
+    letter-spacing: 3px;
     margin-bottom: 20px;
 }
 
-.restart-btn {
-    padding: 13px 20px;
-    border-radius: 13px;
-    background: #171722;
-    color: white;
-    font-weight: 800;
+.result-title {
+    font-size: 13px;
+    letter-spacing: 2px;
+    font-weight: 900;
+    color: #8b95a8;
 }
 
-/* MOBILE NAV */
+.result-rank {
+    font-size: 62px;
+    font-weight: 900;
+    line-height: 1;
+    margin: 8px 0 3px;
+    color: #3779e7;
+}
+
+.result-label {
+    color: #8791a3;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+}
+
+.result-score {
+    font-size: 37px;
+    font-weight: 900;
+    margin-top: 23px;
+}
+
+.result-score span {
+    color: #8b94a4;
+    font-size: 18px;
+}
+
+.result-divider {
+    margin: 22px 0;
+    color: #b4bcc9;
+    font-size: 12px;
+}
+
+.result-category {
+    font-weight: 900;
+    font-size: 17px;
+    margin-bottom: 5px;
+}
+
+.result-message {
+    color: #758095;
+    font-size: 13px;
+}
+
+.result-thanks {
+    margin-top: 25px;
+    font-size: 13px;
+    color: #7d8799;
+    line-height: 1.6;
+}
+
+
+/* ================= RANKINGS ================= */
+
+.rank-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.rank-tab {
+    padding: 10px 15px;
+    border-radius: 11px;
+    background: white;
+    border: 1px solid #e1e6ef;
+    color: #758095;
+    font-weight: 700;
+}
+
+.rank-tab.active {
+    background: #edf4ff;
+    color: #3477e7;
+    border-color: #cfe0ff;
+}
+
+.ranking-container {
+    background: white;
+    border: 1px solid #e6ebf2;
+    border-radius: 21px;
+    overflow: hidden;
+}
+
+.rank-row {
+    display: grid;
+    grid-template-columns: 65px 1fr 100px 120px;
+    align-items: center;
+    padding: 15px 18px;
+    border-bottom: 1px solid #eef1f5;
+}
+
+.rank-row:last-child {
+    border-bottom: 0;
+}
+
+.rank-number {
+    font-weight: 900;
+    color: #778195;
+}
+
+.rank-name {
+    font-weight: 750;
+}
+
+.rank-score {
+    text-align: right;
+    font-weight: 900;
+}
+
+.rank-category {
+    text-align: right;
+    font-size: 11px;
+    font-weight: 800;
+    color: #7d8799;
+}
+
+.ranking-title {
+    margin-bottom: 17px;
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.loading {
+    padding: 35px;
+    text-align: center;
+    color: #8791a3;
+}
+
+.empty {
+    padding: 35px;
+    text-align: center;
+    color: #8791a3;
+}
+
+
+/* ================= ADMIN ================= */
+
+.admin-box {
+    max-width: 450px;
+    background: white;
+    border: 1px solid #e7ebf2;
+    border-radius: 23px;
+    padding: 25px;
+}
+
+.admin-box input {
+    width: 100%;
+    padding: 14px;
+    margin: 7px 0 14px;
+    border: 1px solid #dfe5ef;
+    border-radius: 12px;
+    outline: none;
+}
+
+.admin-note {
+    margin-top: 14px;
+    font-size: 12px;
+    color: #8993a4;
+    line-height: 1.6;
+}
+
+
+/* ================= MOBILE NAV ================= */
 
 .bottom-nav {
     display: none;
 }
 
-/* LOADING */
+@media(max-width:850px) {
 
-.loading {
-    display: none;
-    text-align: center;
-    padding: 40px;
-    color: #777785;
+    .sidebar {
+        display: none;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 18px 15px 95px;
+    }
+
+    .bottom-nav {
+        position: fixed;
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        height: 66px;
+        background: rgba(255,255,255,.96);
+        backdrop-filter: blur(15px);
+        border: 1px solid #e3e8f0;
+        border-radius: 20px;
+        z-index: 200;
+        box-shadow: 0 10px 35px rgba(24,40,70,.12);
+    }
+
+    .bottom-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        color: #8992a3;
+        background: transparent;
+        font-size: 9px;
+        font-weight: 800;
+    }
+
+    .bottom-item.active {
+        color: #397be9;
+    }
+
+    .bottom-item i {
+        width: 18px;
+    }
+
+    .hero {
+        padding: 30px 23px;
+        min-height: 430px;
+        border-radius: 23px;
+    }
+
+    .hero h1 {
+        font-size: 44px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .survey-shell {
+        padding: 18px;
+        border-radius: 20px;
+    }
+
+    .quiz-grid {
+        grid-template-columns: repeat(2,1fr);
+        gap: 10px;
+    }
+
+    .quiz-box {
+        padding: 13px;
+    }
+
+    .quiz-actions {
+        flex-direction: column;
+    }
+
+    .rank-row {
+        grid-template-columns: 45px 1fr 70px;
+    }
+
+    .rank-category {
+        display: none;
+    }
+
+    .rank-score {
+        font-size: 14px;
+    }
 }
 
-.spinner {
-    width: 35px;
-    height: 35px;
-    border: 3px solid #ededf3;
-    border-top-color: #ff4fa3;
-    border-radius: 50%;
-    animation: spin .8s linear infinite;
-    margin: 0 auto 12px;
+@media(max-width:450px) {
+
+    .hero h1 {
+        font-size: 39px;
+    }
+
+    .question h2 {
+        font-size: 21px;
+    }
+
+    .question-actions .btn {
+        padding: 11px 13px;
+        font-size: 13px;
+    }
+
+    .quiz-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .quiz-number {
+        font-size: 17px;
+    }
+}
+
+
+/* ================= TOAST ================= */
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 90px;
+    transform: translate(-50%,20px);
+    background: #1e2634;
+    color: white;
+    padding: 12px 17px;
+    border-radius: 12px;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: .25s;
+    z-index: 500;
+    max-width: calc(100% - 30px);
+    text-align: center;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%,0);
+}
+
+
+/* ================= SPINNER ================= */
+
+.spin {
+    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
@@ -411,276 +854,667 @@ button {
     }
 }
 
-/* ERROR */
-
-.error {
-    display: none;
-    margin-top: 15px;
-    padding: 13px 15px;
-    border-radius: 12px;
-    background: #fff0f4;
-    color: #c93263;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-/* RESPONSIVE */
-
-@media (max-width: 800px) {
-
-    .sidebar {
-        display: none;
-    }
-
-    .main {
-        margin-left: 0;
-        padding: 22px 15px 100px;
-    }
-
-    .topbar {
-        margin-bottom: 20px;
-    }
-
-    .quiz-card {
-        padding: 20px 16px;
-        border-radius: 20px;
-    }
-
-    .bottom-nav {
-        position: fixed;
-        display: flex;
-        left: 12px;
-        right: 12px;
-        bottom: 12px;
-        height: 66px;
-        border-radius: 20px;
-        background: rgba(255,255,255,.95);
-        backdrop-filter: blur(18px);
-        border: 1px solid #ededf4;
-        box-shadow: 0 12px 35px rgba(30,30,60,.12);
-        z-index: 100;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .bottom-item {
-        flex: 1;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        color: #858592;
-        background: transparent;
-        font-size: 10px;
-        font-weight: 800;
-    }
-
-    .bottom-item.active {
-        color: #ef3d91;
-    }
-
-    .bottom-item i {
-        width: 19px;
-        height: 19px;
-    }
-
-    .hero h1 {
-        font-size: 34px;
-    }
-}
 </style>
 </head>
 
 <body>
 
-<div class="page">
+<div class="app">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
 
-        <div class="logo">
-            <div class="logo-icon">
-                <i data-lucide="heart"></i>
-            </div>
-            Relationship Quiz
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            <i data-lucide="heart"></i>
         </div>
 
-        <button class="nav-item">
-            <i data-lucide="house"></i>
-            Home
-        </button>
+        Relationship Quiz
 
-        <button class="nav-item active">
-            <i data-lucide="sparkles"></i>
-            Girls Survey
-        </button>
+    </div>
 
-        <button class="nav-item">
-            <i data-lucide="zap"></i>
-            Boys Survey
-        </button>
+    <div class="nav-title">MENU</div>
 
-        <button class="nav-item">
-            <i data-lucide="trophy"></i>
-            Rankings
-        </button>
-
-        <button class="nav-item">
-            <i data-lucide="shield"></i>
-            Admin Login
-        </button>
-
-    </aside>
-
-    <!-- MAIN -->
-    <main class="main">
-
-        <div class="topbar">
-            <div class="badge">
-                <i data-lucide="heart" style="width:14px"></i>
-                GIRLS QUIZ 1
-            </div>
-        </div>
-
-        <section class="hero">
-            <h1>Relationship Quiz 💗</h1>
-            <p>
-                Answer honestly. There are no perfect answers —
-                your score simply reflects how your choices line up
-                with healthy relationship boundaries.
-            </p>
-        </section>
-
-        <div class="quiz-card">
-
-            <!-- LOADING -->
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                Loading quiz...
-            </div>
-
-            <!-- QUIZ -->
-            <div id="quizArea">
-
-                <div class="progress-wrap">
-
-                    <div class="progress-info">
-                        <span id="progressText">Question 1 of 25</span>
-                        <span id="progressPercent">4%</span>
-                    </div>
-
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-
-                </div>
-
-                <div class="question-number" id="questionNumber">
-                    QUESTION 01
-                </div>
-
-                <div class="question" id="questionText"></div>
-
-                <div class="options" id="options"></div>
-
-                <button class="next-btn" id="nextBtn" disabled>
-                    Next Question
-                    <i data-lucide="arrow-right" style="width:18px;vertical-align:middle"></i>
-                </button>
-
-            </div>
-
-            <!-- NAME -->
-            <div class="name-box" id="nameBox" style="display:none">
-
-                <label for="name">
-                    Your name
-                </label>
-
-                <input
-                    id="name"
-                    class="name-input"
-                    type="text"
-                    maxlength="40"
-                    placeholder="Enter your name"
-                    autocomplete="off"
-                >
-
-                <button class="next-btn" id="submitBtn">
-                    Submit My Score
-                    <i data-lucide="check" style="width:18px;vertical-align:middle"></i>
-                </button>
-
-                <div class="error" id="errorBox"></div>
-
-            </div>
-
-            <!-- RESULT -->
-            <div class="result" id="result">
-
-                <div class="result-icon">
-                    <i data-lucide="trophy" style="width:34px;height:34px"></i>
-                </div>
-
-                <div class="score" id="finalScore">0</div>
-
-                <div class="score-label">
-                    out of 100
-                </div>
-
-                <div class="result-title" id="resultTitle"></div>
-
-                <div class="result-message" id="resultMessage"></div>
-
-                <div class="rank-box">
-                    <i data-lucide="bar-chart-3"></i>
-                    Your rank: <span id="finalRank">—</span>
-                </div>
-
-                <br>
-
-                <button class="restart-btn" id="restartBtn">
-                    <i data-lucide="rotate-ccw" style="width:16px;vertical-align:middle"></i>
-                    Take Quiz Again
-                </button>
-
-            </div>
-
-        </div>
-
-    </main>
-
-</div>
-
-<!-- MOBILE BOTTOM NAV -->
-
-<nav class="bottom-nav">
-
-    <button class="bottom-item">
+    <button class="nav-item active" data-page="home">
         <i data-lucide="house"></i>
         Home
     </button>
 
-    <button class="bottom-item active">
-        <i data-lucide="heart"></i>
-        Girls
+    <button class="nav-item" data-page="girls">
+        <i data-lucide="sparkles"></i>
+        Girls Survey
     </button>
 
-    <button class="bottom-item">
+    <button class="nav-item" data-page="boys">
         <i data-lucide="zap"></i>
-        Boys
+        Boys Survey
     </button>
 
-    <button class="bottom-item">
+    <button class="nav-item" data-page="rankings">
         <i data-lucide="trophy"></i>
         Rankings
     </button>
 
+    <button class="nav-item" data-page="admin">
+        <i data-lucide="shield"></i>
+        Admin Login
+    </button>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+
+<!-- ================= HOME ================= -->
+
+<section class="page active" id="home">
+
+    <div class="hero">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                <i data-lucide="heart" width="14"></i>
+                RELATIONSHIP TEST
+            </div>
+
+            <h1>
+                How healthy is your
+                <span class="gradient-text">
+                    relationship?
+                </span>
+            </h1>
+
+            <p>
+                Answer honestly. Your choices reveal how you
+                handle trust, freedom, boundaries and communication
+                in a relationship.
+            </p>
+
+            <button
+                class="btn btn-primary"
+                onclick="showPage('girls')">
+
+                Start Girls Survey
+
+                <i data-lucide="arrow-right" width="17"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="info-card">
+
+            <div
+                class="info-icon"
+                style="background:#edf4ff;color:#397be9">
+
+                <i data-lucide="list-checks"></i>
+
+            </div>
+
+            <h3>25 Questions</h3>
+
+            <p>
+                Real relationship situations about
+                trust, privacy, freedom and boundaries.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div
+                class="info-icon"
+                style="background:#fff0f8;color:#e75ca9">
+
+                <i data-lucide="heart-handshake"></i>
+
+            </div>
+
+            <h3>Honest Answers</h3>
+
+            <p>
+                There are no perfect answers except
+                the ones that genuinely reflect you.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div
+                class="info-icon"
+                style="background:#f1edff;color:#7959d9">
+
+                <i data-lucide="trophy"></i>
+
+            </div>
+
+            <h3>See Your Rank</h3>
+
+            <p>
+                Your score is compared with everyone
+                already in the selected quiz ranking.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= GIRLS ================= -->
+
+<section class="page girls-page" id="girls">
+
+    <div class="page-header">
+
+        <div class="badge">
+
+            <i data-lucide="sparkles" width="14"></i>
+
+            GIRLS SURVEY
+
+        </div>
+
+        <h1>Relationship Tests 💗</h1>
+
+        <p>
+            Choose a quiz to begin.
+        </p>
+
+    </div>
+
+
+    <div
+        class="quiz-grid girls-quiz-grid"
+        id="girlsQuizGrid">
+    </div>
+
+
+    <!-- CURRENT QUIZ -->
+
+    <div
+        class="survey-shell"
+        id="girlsQuizShell"
+        style="display:none;margin-top:20px">
+
+        <div class="name-section">
+
+            <label id="girlsQuizNameLabel">
+                Your name
+            </label>
+
+            <input
+                id="girlsName"
+                class="name-input"
+                maxlength="100"
+                placeholder="Enter your name"
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <div id="girlsQuiz">
+
+            <div class="progress-wrap">
+
+                <div class="progress-top">
+
+                    <span id="progressText">
+                        Question 1 of 25
+                    </span>
+
+                    <span id="progressPercent">
+                        4%
+                    </span>
+
+                </div>
+
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        id="progressBar">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div id="questions"></div>
+
+
+            <div class="question-actions">
+
+                <button
+                    class="btn"
+                    id="prevBtn"
+                    style="background:#f0f2f6;color:#667084"
+                    onclick="previousQuestion()">
+
+                    <i data-lucide="arrow-left" width="16"></i>
+
+                    Previous
+
+                </button>
+
+
+                <button
+                    class="btn btn-pink"
+                    id="nextBtn"
+                    onclick="nextQuestion()">
+
+                    Next
+
+                    <i data-lucide="arrow-right" width="16"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="result-wrap"
+            id="resultWrap">
+
+            <div class="result-card">
+
+                <div class="heart-line">
+                    ♡ ───────────── ♡
+                </div>
+
+                <div class="result-title">
+                    YOUR RESULT
+                </div>
+
+                <div
+                    class="result-rank"
+                    id="resultRank">
+                    #--
+                </div>
+
+                <div class="result-label">
+                    YOUR RANK
+                </div>
+
+                <div class="result-score">
+
+                    <span id="resultScore">
+                        --
+                    </span>
+
+                    <span>/ 100</span>
+
+                </div>
+
+                <div class="result-label">
+                    YOUR SCORE
+                </div>
+
+                <div class="result-divider">
+                    ── relationship test ──
+                </div>
+
+                <div
+                    class="result-category"
+                    id="resultCategory">
+                    --
+                </div>
+
+                <div
+                    class="result-message"
+                    id="resultMessage">
+                    --
+                </div>
+
+                <div class="result-thanks">
+                    ♡ thank you for<br>
+                    participating ♡
+                </div>
+
+                <div style="margin-top:22px">
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="showPage('rankings');loadRankings()">
+
+                        View Rankings
+
+                        <i
+                            data-lucide="trophy"
+                            width="16">
+                        </i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= BOYS ================= -->
+
+<section class="page boys-page" id="boys">
+
+    <div class="page-header">
+
+        <div
+            class="badge"
+            style="background:#332844;color:#b89cff">
+
+            <i data-lucide="zap" width="14"></i>
+
+            BOYS SURVEY
+
+        </div>
+
+        <h1>Relationship Tests</h1>
+
+        <p>
+            Choose a quiz to begin.
+        </p>
+
+    </div>
+
+
+    <div
+        class="quiz-grid boys-quiz-grid"
+        id="boysQuizGrid">
+    </div>
+
+
+    <div
+        class="survey-shell"
+        id="boysComingSoon"
+        style="margin-top:20px">
+
+        <div
+            style="
+                text-align:center;
+                padding:45px 20px;
+            ">
+
+            <div
+                style="
+                    width:70px;
+                    height:70px;
+                    border-radius:22px;
+                    margin:auto;
+                    display:grid;
+                    place-items:center;
+                    background:#342744;
+                    color:#b48cff;
+                ">
+
+                <i
+                    data-lucide="zap"
+                    width="31">
+                </i>
+
+            </div>
+
+            <h2 style="margin-top:20px">
+                Boys quizzes are empty
+            </h2>
+
+            <p style="
+                color:#9b91aa;
+                margin-top:8px;
+            ">
+                Questions can be added later.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= RANKINGS ================= -->
+
+<section class="page" id="rankings">
+
+    <div class="page-header">
+
+        <div class="badge">
+
+            <i data-lucide="trophy" width="14"></i>
+
+            RANKINGS
+
+        </div>
+
+        <h1 id="rankingPageTitle">
+            Relationship Rankings
+        </h1>
+
+        <p id="rankingPageSubtitle">
+            Scores are ranked from highest to lowest.
+        </p>
+
+    </div>
+
+
+    <div
+        class="ranking-title"
+        id="selectedQuizTitle">
+        Girls Quiz 1
+    </div>
+
+
+    <div class="rank-tabs">
+
+        <button
+            class="rank-tab active"
+            onclick="filterRanking('all',this)">
+
+            All
+
+        </button>
+
+        <button
+            class="rank-tab"
+            onclick="filterRanking('keeper',this)">
+
+            Keepers
+
+        </button>
+
+        <button
+            class="rank-tab"
+            onclick="filterRanking('work',this)">
+
+            Needs Work
+
+        </button>
+
+        <button
+            class="rank-tab"
+            onclick="filterRanking('red',this)">
+
+            Red Flags
+
+        </button>
+
+    </div>
+
+
+    <div
+        class="ranking-container"
+        id="rankingList">
+
+        <div class="loading">
+            Loading rankings...
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ADMIN ================= -->
+
+<section class="page" id="admin">
+
+    <div class="page-header">
+
+        <div class="badge">
+
+            <i data-lucide="shield" width="14"></i>
+
+            ADMIN
+
+        </div>
+
+        <h1>Admin Login</h1>
+
+        <p>
+            Sign in using your Supabase Auth account.
+        </p>
+
+    </div>
+
+
+    <div class="admin-box">
+
+        <label style="font-size:13px;font-weight:800">
+            Email
+        </label>
+
+        <input
+            id="adminEmail"
+            type="email"
+            placeholder="admin@example.com"
+            autocomplete="email"
+        >
+
+
+        <label style="font-size:13px;font-weight:800">
+            Password
+        </label>
+
+        <input
+            id="adminPassword"
+            type="password"
+            placeholder="Password"
+            autocomplete="current-password"
+        >
+
+
+        <button
+            class="btn btn-primary"
+            style="width:100%"
+            onclick="adminLogin()">
+
+            <i data-lucide="log-in" width="16"></i>
+
+            Login
+
+        </button>
+
+
+        <div class="admin-note">
+
+            Admin authentication is handled by Supabase.
+            No admin password is stored inside this HTML file.
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- ================= MOBILE NAV ================= -->
+
+<nav class="bottom-nav">
+
+    <button
+        class="bottom-item active"
+        data-page="home">
+
+        <i data-lucide="house"></i>
+
+        Home
+
+    </button>
+
+
+    <button
+        class="bottom-item"
+        data-page="girls">
+
+        <i data-lucide="sparkles"></i>
+
+        Girls
+
+    </button>
+
+
+    <button
+        class="bottom-item"
+        data-page="boys">
+
+        <i data-lucide="zap"></i>
+
+        Boys
+
+    </button>
+
+
+    <button
+        class="bottom-item"
+        data-page="rankings">
+
+        <i data-lucide="trophy"></i>
+
+        Rankings
+
+    </button>
+
 </nav>
 
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+</div>
+
+
 <script>
+
 /* =========================================================
    SUPABASE
 ========================================================= */
@@ -700,538 +1534,1044 @@ const db = createClient(
 
 
 /* =========================================================
-   QUIZ
+   QUESTIONS — GIRLS QUIZ 1
 ========================================================= */
 
 const questions = [
 
 {
-    q: "I go out with a male friend without telling my boyfriend. What would I expect him to do?",
-    options: [
-        ["Ask me calmly about it", 3],
-        ["Give me space and discuss it later", 4],
-        ["Get upset and demand an explanation", 1],
-        ["Ignore it completely", 2]
-    ]
-},
+q:"I go out with a male friend without telling my boyfriend. What would I expect him to do?",
+options:[
+["Ask me calmly about it",3],
+["Give me space and discuss it later",4],
+["Get upset and demand an explanation",1],
+["Ignore it completely",2]
+]},
 
 {
-    q: "I post a photo online that my boyfriend dislikes. What would I expect him to do?",
-    options: [
-        ["Ask me to remove it", 2],
-        ["Tell me honestly how he feels", 4],
-        ["Tell me what I can post", 1],
-        ["Discuss why it bothers him", 3]
-    ]
-},
+q:"I post a photo online that my boyfriend dislikes. What would I expect him to do?",
+options:[
+["Ask me to remove it",2],
+["Tell me honestly how he feels",4],
+["Tell me what I can post",1],
+["Discuss why it bothers him",3]
+]},
 
 {
-    q: "I spend the evening with my friends instead of my boyfriend. What would I expect him to do?",
-    options: [
-        ["Respect my plans", 4],
-        ["Ask me to choose between them", 1],
-        ["Tell me he feels neglected", 3],
-        ["Give me the silent treatment", 2]
-    ]
-},
+q:"I spend the evening with my friends instead of my boyfriend. What would I expect him to do?",
+options:[
+["Respect my plans",4],
+["Ask me to choose between them",1],
+["Tell me he feels neglected",3],
+["Give me the silent treatment",2]
+]},
 
 {
-    q: "I receive a late-night message from another man and reply to him. What would I expect my boyfriend to do?",
-    options: [
-        ["Ask who he is", 3],
-        ["Check my messages", 1],
-        ["Tell me he feels uncomfortable", 4],
-        ["Ignore the situation", 2]
-    ]
-},
+q:"I receive a late-night message from another man and reply to him. What would I expect my boyfriend to do?",
+options:[
+["Ask who he is",3],
+["Check my messages",1],
+["Tell me he feels uncomfortable",4],
+["Ignore the situation",2]
+]},
 
 {
-    q: "I tell my boyfriend that I need more personal space. What would I expect him to do?",
-    options: [
-        ["Give me more freedom", 4],
-        ["Ask what I mean by space", 3],
-        ["Become more controlling", 1],
-        ["Give me time without pressure", 2]
-    ]
-},
+q:"I tell my boyfriend that I need more personal space. What would I expect him to do?",
+options:[
+["Give me more freedom",4],
+["Ask what I mean by space",3],
+["Become more controlling",1],
+["Give me time without pressure",2]
+]},
 
 {
-    q: "I keep my phone private while spending time with my boyfriend. What would I expect him to do?",
-    options: [
-        ["Ask why I am being private", 3],
-        ["Respect my phone privacy", 4],
-        ["Demand to see it", 1],
-        ["Become suspicious immediately", 2]
-    ]
-},
+q:"I keep my phone private while spending time with my boyfriend. What would I expect him to do?",
+options:[
+["Ask why I am being private",3],
+["Respect my phone privacy",4],
+["Demand to see it",1],
+["Become suspicious immediately",2]
+]},
 
 {
-    q: "I wear something my boyfriend considers too revealing. What would I expect him to do?",
-    options: [
-        ["Tell me how he feels", 4],
-        ["Tell me to change", 1],
-        ["Ask why I chose it", 3],
-        ["Ignore his feelings completely", 2]
-    ]
-},
+q:"I wear something my boyfriend considers too revealing. What would I expect him to do?",
+options:[
+["Tell me how he feels",4],
+["Tell me to change",1],
+["Ask why I chose it",3],
+["Ignore his feelings completely",2]
+]},
 
 {
-    q: "I want to travel with my friends without my boyfriend. What would I expect him to do?",
-    options: [
-        ["Trust me and let me go", 4],
-        ["Ask about the plans", 3],
-        ["Tell me I should not go", 1],
-        ["Ask me to cancel the trip", 2]
-    ]
-},
+q:"I want to travel with my friends without my boyfriend. What would I expect him to do?",
+options:[
+["Trust me and let me go",4],
+["Ask about the plans",3],
+["Tell me I should not go",1],
+["Ask me to cancel the trip",2]
+]},
 
 {
-    q: "I become close friends with a new male classmate. What would I expect my boyfriend to do?",
-    options: [
-        ["Ask about the friendship", 3],
-        ["Trust me unless there is a reason not to", 4],
-        ["Tell me to stop talking to him", 1],
-        ["Become distant toward me", 2]
-    ]
-},
+q:"I become close friends with a new male classmate. What would I expect my boyfriend to do?",
+options:[
+["Ask about the friendship",3],
+["Trust me unless there is a reason not to",4],
+["Tell me to stop talking to him",1],
+["Become distant toward me",2]
+]},
 
 {
-    q: "I decide not to post our relationship online. What would I expect my boyfriend to do?",
-    options: [
-        ["Respect my decision", 4],
-        ["Ask why I prefer privacy", 3],
-        ["Demand that I post him", 1],
-        ["Assume I am hiding him", 2]
-    ]
-},
+q:"I decide not to post our relationship online. What would I expect my boyfriend to do?",
+options:[
+["Respect my decision",4],
+["Ask why I prefer privacy",3],
+["Demand that I post him",1],
+["Assume I am hiding him",2]
+]},
 
 {
-    q: "I want an evening alone instead of spending it with my boyfriend. What would I expect him to do?",
-    options: [
-        ["Respect my need for space", 4],
-        ["Ask if something is wrong", 3],
-        ["Become angry about it", 1],
-        ["Keep asking me to stay", 2]
-    ]
-},
+q:"I want an evening alone instead of spending it with my boyfriend. What would I expect him to do?",
+options:[
+["Respect my need for space",4],
+["Ask if something is wrong",3],
+["Become angry about it",1],
+["Keep asking me to stay",2]
+]},
 
 {
-    q: "I reconnect with an old male friend. What would I expect my boyfriend to do?",
-    options: [
-        ["Ask about the friendship", 3],
-        ["Trust me with the friendship", 4],
-        ["Tell me to cut contact", 1],
-        ["Secretly check our conversations", 2]
-    ]
-},
+q:"I reconnect with an old male friend. What would I expect my boyfriend to do?",
+options:[
+["Ask about the friendship",3],
+["Trust me with the friendship",4],
+["Tell me to cut contact",1],
+["Secretly check our conversations",2]
+]},
 
 {
-    q: "I disagree with one of my boyfriend's relationship boundaries. What would I expect him to do?",
-    options: [
-        ["Discuss a compromise", 4],
-        ["Explain why the boundary matters", 3],
-        ["Expect me to follow it without discussion", 1],
-        ["End the conversation immediately", 2]
-    ]
-},
+q:"I disagree with one of my boyfriend's relationship boundaries. What would I expect him to do?",
+options:[
+["Discuss a compromise",4],
+["Explain why the boundary matters",3],
+["Expect me to follow it without discussion",1],
+["End the conversation immediately",2]
+]},
 
 {
-    q: "I make plans without asking my boyfriend first. What would I expect him to do?",
-    options: [
-        ["Ask me about the plans", 3],
-        ["Respect that I have my own plans", 4],
-        ["Get angry that I did not ask", 1],
-        ["Tell me I should have asked permission", 2]
-    ]
-},
+q:"I make plans without asking my boyfriend first. What would I expect him to do?",
+options:[
+["Ask me about the plans",3],
+["Respect that I have my own plans",4],
+["Get angry that I did not ask",1],
+["Tell me I should have asked permission",2]
+]},
 
 {
-    q: "I tell my boyfriend that I want more independence. What would I expect him to do?",
-    options: [
-        ["Ask what independence means to me", 3],
-        ["Give me more personal freedom", 4],
-        ["Try to limit my activities", 1],
-        ["Assume I want to leave him", 2]
-    ]
-},
+q:"I tell my boyfriend that I want more independence. What would I expect him to do?",
+options:[
+["Ask what independence means to me",3],
+["Give me more personal freedom",4],
+["Try to limit my activities",1],
+["Assume I want to leave him",2]
+]},
 
 {
-    q: "My boyfriend checks my social-media activity without asking. What would I do?",
-    options: [
-        ["Ask why he checked it", 4],
-        ["Let it go without discussing it", 2],
-        ["Set a clear privacy boundary", 3],
-        ["Check his activity in return", 1]
-    ]
-},
+q:"My boyfriend checks my social-media activity without asking. What would I do?",
+options:[
+["Ask why he checked it",4],
+["Let it go without discussing it",2],
+["Set a clear privacy boundary",3],
+["Check his activity in return",1]
+]},
 
 {
-    q: "My boyfriend tells me he does not like one of my male friends. What would I do?",
-    options: [
-        ["Ask what concerns him", 4],
-        ["Stop seeing the friend immediately", 1],
-        ["Explain my side of the friendship", 3],
-        ["Avoid discussing the subject", 2]
-    ]
-},
+q:"My boyfriend tells me he does not like one of my male friends. What would I do?",
+options:[
+["Ask what concerns him",4],
+["Stop seeing the friend immediately",1],
+["Explain my side of the friendship",3],
+["Avoid discussing the subject",2]
+]},
 
 {
-    q: "My boyfriend asks me for my social-media password. What would I do?",
-    options: [
-        ["Give him the password", 1],
-        ["Explain that I value privacy", 4],
-        ["Ask why he needs it", 3],
-        ["Refuse without discussing it", 2]
-    ]
-},
+q:"My boyfriend asks me for my social-media password. What would I do?",
+options:[
+["Give him the password",1],
+["Explain that I value privacy",4],
+["Ask why he needs it",3],
+["Refuse without discussing it",2]
+]},
 
 {
-    q: "My boyfriend repeatedly asks where I am when I go out. What would I do?",
-    options: [
-        ["Tell him my plans", 3],
-        ["Ask why he needs constant updates", 4],
-        ["Stop sharing my plans", 1],
-        ["Become annoyed and ignore him", 2]
-    ]
-},
+q:"My boyfriend repeatedly asks where I am when I go out. What would I do?",
+options:[
+["Tell him my plans",3],
+["Ask why he needs constant updates",4],
+["Stop sharing my plans",1],
+["Become annoyed and ignore him",2]
+]},
 
 {
-    q: "My boyfriend wants me to spend less time with my friends. What would I do?",
-    options: [
-        ["Ask why he feels that way", 4],
-        ["Spend less time with them", 2],
-        ["Explain that friendships matter to me", 3],
-        ["Tell him he cannot control it", 1]
-    ]
-},
+q:"My boyfriend wants me to spend less time with my friends. What would I do?",
+options:[
+["Ask why he feels that way",4],
+["Spend less time with them",2],
+["Explain that friendships matter to me",3],
+["Tell him he cannot control it",1]
+]},
 
 {
-    q: "My boyfriend posts a photo of us without asking me first. What would I do?",
-    options: [
-        ["Ask him to remove it", 2],
-        ["Tell him I prefer being asked first", 4],
-        ["Leave it without saying anything", 1],
-        ["Ask why he posted it", 3]
-    ]
-},
+q:"My boyfriend posts a photo of us without asking me first. What would I do?",
+options:[
+["Ask him to remove it",2],
+["Tell him I prefer being asked first",4],
+["Leave it without saying anything",1],
+["Ask why he posted it",3]
+]},
 
 {
-    q: "My boyfriend wants to know who I am talking to online. What would I do?",
-    options: [
-        ["Tell him generally", 3],
-        ["Ask why he wants to know", 4],
-        ["Show him my conversations", 2],
-        ["Tell him it is none of his business", 1]
-    ]
-},
+q:"My boyfriend wants to know who I am talking to online. What would I do?",
+options:[
+["Tell him generally",3],
+["Ask why he wants to know",4],
+["Show him my conversations",2],
+["Tell him it is none of his business",1]
+]},
 
 {
-    q: "My boyfriend says he needs more freedom in our relationship. What would I do?",
-    options: [
-        ["Ask what freedom means to him", 4],
-        ["Give him more personal space", 3],
-        ["Become worried and question him", 2],
-        ["Try to limit his freedom", 1]
-    ]
-},
+q:"My boyfriend says he needs more freedom in our relationship. What would I do?",
+options:[
+["Ask what freedom means to him",4],
+["Give him more personal space",3],
+["Become worried and question him",2],
+["Try to limit his freedom",1]
+]},
 
 {
-    q: "My boyfriend goes on a trip with his friends without me. What would I do?",
-    options: [
-        ["Trust him and let him enjoy it", 4],
-        ["Ask about the trip", 3],
-        ["Ask him to keep me updated", 2],
-        ["Tell him I do not want him going", 1]
-    ]
-},
+q:"My boyfriend goes on a trip with his friends without me. What would I do?",
+options:[
+["Trust him and let him enjoy it",4],
+["Ask about the trip",3],
+["Ask him to keep me updated",2],
+["Tell him I do not want him going",1]
+]},
 
 {
-    q: "My boyfriend posts something about our relationship that makes me uncomfortable. What would I do?",
-    options: [
-        ["Ask him to remove it", 2],
-        ["Explain why it bothers me", 4],
-        ["Ignore it completely", 1],
-        ["Ask him to discuss posts with me first", 3]
-    ]
+q:"My boyfriend posts something about our relationship that makes me uncomfortable. What would I do?",
+options:[
+["Ask him to remove it",2],
+["Explain why it bothers me",4],
+["Ignore it completely",1],
+["Ask him to discuss posts with me first",3]
+]}
+
 ];
 
 
 /* =========================================================
-   STATE
+   QUIZ STATE
 ========================================================= */
 
 let currentQuestion = 0;
-let totalScore = 0;
-let selectedScore = null;
-let quizId = null;
+
+let answers =
+    new Array(questions.length).fill(null);
+
+let rankingData = [];
+
+let selectedQuizId = null;
+
+let selectedQuizGender = "girls";
+
+let selectedQuizNumber = 1;
+
+let selectedQuizTitle = "Girls Quiz 1";
+
+let selectedRankingFilter = "all";
 
 
 /* =========================================================
-   ELEMENTS
+   NAVIGATION
 ========================================================= */
 
-const questionText = document.getElementById("questionText");
-const questionNumber = document.getElementById("questionNumber");
-const optionsContainer = document.getElementById("options");
+function showPage(pageName) {
 
-const nextBtn = document.getElementById("nextBtn");
+    document.querySelectorAll(".page")
+        .forEach(p =>
+            p.classList.remove("active")
+        );
 
-const progressText = document.getElementById("progressText");
-const progressPercent = document.getElementById("progressPercent");
-const progressFill = document.getElementById("progressFill");
+    const page =
+        document.getElementById(pageName);
 
-const quizArea = document.getElementById("quizArea");
-const nameBox = document.getElementById("nameBox");
+    if (page) {
+        page.classList.add("active");
+    }
 
-const nameInput = document.getElementById("name");
-const submitBtn = document.getElementById("submitBtn");
 
-const result = document.getElementById("result");
-const finalScore = document.getElementById("finalScore");
-const finalRank = document.getElementById("finalRank");
-const resultTitle = document.getElementById("resultTitle");
-const resultMessage = document.getElementById("resultMessage");
+    document
+        .querySelectorAll(".nav-item,.bottom-item")
+        .forEach(item => {
 
-const restartBtn = document.getElementById("restartBtn");
+            item.classList.toggle(
+                "active",
+                item.dataset.page === pageName
+            );
 
-const loading = document.getElementById("loading");
-const errorBox = document.getElementById("errorBox");
+        });
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+
+    if (pageName === "rankings") {
+
+        loadRankings();
+
+    }
+
+}
 
 
 /* =========================================================
-   FIND GIRLS QUIZ 1
+   NAVIGATION BUTTONS
 ========================================================= */
 
-async function loadQuiz() {
+document
+.querySelectorAll(".nav-item,.bottom-item")
+.forEach(item => {
 
-    loading.style.display = "block";
-    quizArea.style.display = "none";
+    item.addEventListener("click", () => {
 
-    const { data, error } = await db
-        .from("quizzes")
-        .select("id")
-        .eq("gender", "girls")
-        .eq("quiz_number", 1)
-        .single();
+        showPage(item.dataset.page);
 
-    if (error || !data) {
+    });
 
-        loading.innerHTML = `
-            <div style="font-weight:800;color:#c93263;">
-                Quiz could not be loaded.
-            </div>
-            <div style="font-size:13px;margin-top:7px;">
-                Please check your Supabase database.
+});
+
+
+/* =========================================================
+   LOAD QUIZ DEFINITIONS
+========================================================= */
+
+async function loadQuizDefinitions() {
+
+    const girlsGrid =
+        document.getElementById("girlsQuizGrid");
+
+    const boysGrid =
+        document.getElementById("boysQuizGrid");
+
+
+    girlsGrid.innerHTML = `
+        <div class="loading">
+            Loading quizzes...
+        </div>
+    `;
+
+    boysGrid.innerHTML = "";
+
+
+    try {
+
+        const { data,error } =
+            await db
+                .from("quizzes")
+                .select("id,gender,quiz_number,title,active")
+                .order("quiz_number", {
+                    ascending:true
+                });
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        const quizzes = data || [];
+
+
+        renderQuizGrid(
+            quizzes.filter(q => q.gender === "girls"),
+            girlsGrid
+        );
+
+
+        renderQuizGrid(
+            quizzes.filter(q => q.gender === "boys"),
+            boysGrid
+        );
+
+
+    } catch(error) {
+
+        console.error(error);
+
+        girlsGrid.innerHTML = `
+            <div class="empty">
+                Could not load quizzes.
             </div>
         `;
 
-        console.error(error);
+        boysGrid.innerHTML = `
+            <div class="empty">
+                Could not load quizzes.
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   RENDER QUIZ BOXES
+========================================================= */
+
+function renderQuizGrid(quizzes,container) {
+
+    if (!quizzes.length) {
+
+        container.innerHTML = `
+            <div class="empty">
+                No quizzes found.
+            </div>
+        `;
+
         return;
     }
 
-    quizId = data.id;
 
-    loading.style.display = "none";
-    quizArea.style.display = "block";
+    container.innerHTML =
+        quizzes.map(quiz => {
 
-    renderQuestion();
+            const isGirls =
+                quiz.gender === "girls";
+
+            const isAvailable =
+                isGirls &&
+                quiz.quiz_number === 1;
+
+
+            return `
+
+                <div class="quiz-box">
+
+                    <div class="quiz-number">
+                        Quiz ${quiz.quiz_number}
+                    </div>
+
+                    <div class="quiz-status">
+                        ${
+                            isAvailable
+                            ? "25 questions"
+                            : "Questions coming later"
+                        }
+                    </div>
+
+                    <div class="quiz-actions">
+
+                        <button
+                            class="btn ${
+                                isAvailable
+                                ? "btn-pink"
+                                : "btn-dark"
+                            }"
+                            onclick="
+                                startQuiz(
+                                    ${quiz.id},
+                                    '${quiz.gender}',
+                                    ${quiz.quiz_number},
+                                    '${escapeAttribute(quiz.title)}'
+                                )
+                            ">
+
+                            <i
+                                data-lucide="play"
+                                width="14">
+                            </i>
+
+                            Start
+
+                        </button>
+
+
+                        <button
+                            class="btn btn-ranking"
+                            onclick="
+                                openQuizRanking(
+                                    ${quiz.id},
+                                    '${escapeAttribute(quiz.gender)}',
+                                    ${quiz.quiz_number},
+                                    '${escapeAttribute(quiz.title)}'
+                                )
+                            ">
+
+                            <i
+                                data-lucide="trophy"
+                                width="14">
+                            </i>
+
+                            Ranking
+
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+
 
     lucide.createIcons();
+
 }
 
 
 /* =========================================================
-   RENDER QUESTION
+   START QUIZ
 ========================================================= */
 
-function renderQuestion() {
+function startQuiz(
+    quizId,
+    gender,
+    quizNumber,
+    title
+) {
 
-    const item = questions[currentQuestion];
+    /*
+     * At the moment only Girls Quiz 1
+     * has questions.
+     */
 
-    selectedScore = null;
-    nextBtn.disabled = true;
+    if (
+        gender !== "girls" ||
+        Number(quizNumber) !== 1
+    ) {
 
-    questionNumber.textContent =
-        `QUESTION ${String(currentQuestion + 1).padStart(2, "0")}`;
+        showToast(
+            `${title} is empty. Questions can be added later.`
+        );
 
-    questionText.textContent = item.q;
+        return;
+    }
 
-    progressText.textContent =
-        `Question ${currentQuestion + 1} of ${questions.length}`;
 
-    const percent =
-        Math.round(((currentQuestion + 1) / questions.length) * 100);
+    selectedQuizId =
+        Number(quizId);
 
-    progressPercent.textContent = `${percent}%`;
-    progressFill.style.width = `${percent}%`;
+    selectedQuizGender =
+        gender;
 
-    optionsContainer.innerHTML = "";
+    selectedQuizNumber =
+        Number(quizNumber);
 
-    item.options.forEach((option, index) => {
+    selectedQuizTitle =
+        title;
 
-        const button = document.createElement("button");
 
-        button.className = "option";
+    resetQuiz();
 
-        button.innerHTML = `
-            <span class="option-letter">
-                ${String.fromCharCode(65 + index)}
-            </span>
 
-            <span class="option-text">
-                ${escapeHTML(option[0])}
-            </span>
+    document.getElementById(
+        "girlsQuizShell"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "girlsQuizNameLabel"
+    ).textContent =
+        `${title} — Your name`;
+
+
+    showPage("girls");
+
+
+    setTimeout(() => {
+
+        document
+            .getElementById("girlsQuizShell")
+            .scrollIntoView({
+                behavior:"smooth",
+                block:"start"
+            });
+
+    },100);
+
+}
+
+
+/* =========================================================
+   OPEN QUIZ RANKING
+========================================================= */
+
+function openQuizRanking(
+    quizId,
+    gender,
+    quizNumber,
+    title
+) {
+
+    selectedQuizId =
+        Number(quizId);
+
+    selectedQuizGender =
+        gender;
+
+    selectedQuizNumber =
+        Number(quizNumber);
+
+    selectedQuizTitle =
+        title;
+
+
+    showPage("rankings");
+
+    loadRankings();
+
+}
+
+
+/* =========================================================
+   RENDER QUESTIONS
+========================================================= */
+
+function renderQuestions() {
+
+    const container =
+        document.getElementById("questions");
+
+    container.innerHTML = "";
+
+
+    questions.forEach((question,index) => {
+
+        const div =
+            document.createElement("div");
+
+        div.className =
+            "question " +
+            (index === 0 ? "active" : "");
+
+        div.id =
+            "question-" + index;
+
+
+        let optionsHTML = "";
+
+
+        question.options.forEach(
+            (option,optionIndex) => {
+
+                const letter =
+                    String.fromCharCode(
+                        65 + optionIndex
+                    );
+
+
+                optionsHTML += `
+
+                    <button
+                        class="option"
+                        data-question="${index}"
+                        data-option="${optionIndex}"
+                        onclick="
+                            selectAnswer(
+                                ${index},
+                                ${optionIndex}
+                            )
+                        ">
+
+                        <span class="option-letter">
+                            ${letter}
+                        </span>
+
+                        <span>
+                            ${escapeHTML(option[0])}
+                        </span>
+
+                    </button>
+                `;
+
+            }
+        );
+
+
+        div.innerHTML = `
+
+            <div class="question-number">
+                QUESTION ${index + 1}
+            </div>
+
+            <h2>
+                ${escapeHTML(question.q)}
+            </h2>
+
+            <div class="options">
+                ${optionsHTML}
+            </div>
+
         `;
 
-        button.addEventListener("click", () => {
 
-            document
-                .querySelectorAll(".option")
-                .forEach(el => el.classList.remove("selected"));
+        container.appendChild(div);
 
-            button.classList.add("selected");
-
-            selectedScore = option[1];
-
-            nextBtn.disabled = false;
-        });
-
-        optionsContainer.appendChild(button);
     });
 
-    nextBtn.innerHTML =
-        currentQuestion === questions.length - 1
-            ? `Finish Quiz <i data-lucide="check"></i>`
-            : `Next Question <i data-lucide="arrow-right"></i>`;
 
-    lucide.createIcons();
+    updateQuizUI();
+
 }
 
 
 /* =========================================================
-   NEXT QUESTION
+   SELECT ANSWER
 ========================================================= */
 
-nextBtn.addEventListener("click", () => {
+function selectAnswer(
+    questionIndex,
+    optionIndex
+) {
 
-    if (selectedScore === null) return;
+    answers[questionIndex] =
+        optionIndex;
 
-    totalScore += selectedScore;
 
-    if (currentQuestion < questions.length - 1) {
+    document
+        .querySelectorAll(
+            `.option[data-question="${questionIndex}"]`
+        )
+        .forEach(option => {
+
+            option.classList.toggle(
+                "selected",
+                Number(option.dataset.option)
+                    === optionIndex
+            );
+
+        });
+
+}
+
+
+/* =========================================================
+   QUIZ NAVIGATION
+========================================================= */
+
+function nextQuestion() {
+
+    if (
+        answers[currentQuestion] === null
+    ) {
+
+        showToast(
+            "Please choose an answer first."
+        );
+
+        return;
+    }
+
+
+    if (
+        currentQuestion <
+        questions.length - 1
+    ) {
 
         currentQuestion++;
 
-        renderQuestion();
+        updateQuizUI();
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
+        return;
+    }
+
+
+    submitQuiz();
+
+}
+
+
+function previousQuestion() {
+
+    if (currentQuestion > 0) {
+
+        currentQuestion--;
+
+        updateQuizUI();
+
+    }
+
+}
+
+
+function updateQuizUI() {
+
+    document
+        .querySelectorAll(".question")
+        .forEach((q,index) => {
+
+            q.classList.toggle(
+                "active",
+                index === currentQuestion
+            );
+
         });
+
+
+    const percent =
+        Math.round(
+            (
+                (currentQuestion + 1) /
+                questions.length
+            ) * 100
+        );
+
+
+    document.getElementById(
+        "progressText"
+    ).textContent =
+        `Question ${
+            currentQuestion + 1
+        } of ${questions.length}`;
+
+
+    document.getElementById(
+        "progressPercent"
+    ).textContent =
+        percent + "%";
+
+
+    document.getElementById(
+        "progressBar"
+    ).style.width =
+        percent + "%";
+
+
+    const prev =
+        document.getElementById("prevBtn");
+
+
+    prev.style.visibility =
+        currentQuestion === 0
+        ? "hidden"
+        : "visible";
+
+
+    const next =
+        document.getElementById("nextBtn");
+
+
+    if (
+        currentQuestion ===
+        questions.length - 1
+    ) {
+
+        next.innerHTML = `
+            Submit
+            <i data-lucide="check" width="16"></i>
+        `;
 
     } else {
 
-        quizArea.style.display = "none";
-        nameBox.style.display = "block";
+        next.innerHTML = `
+            Next
+            <i data-lucide="arrow-right" width="16"></i>
+        `;
 
-        nameInput.focus();
     }
-});
+
+
+    lucide.createIcons();
+
+}
 
 
 /* =========================================================
-   SUBMIT
+   SCORE
 ========================================================= */
 
-submitBtn.addEventListener("click", submitQuiz);
+function calculateScore() {
 
-nameInput.addEventListener("keydown", event => {
+    let score = 0;
 
-    if (event.key === "Enter") {
-        submitQuiz();
-    }
 
-});
+    answers.forEach(
+        (answer,questionIndex) => {
 
+            if (answer !== null) {
+
+                score +=
+                    questions[questionIndex]
+                        .options[answer][1];
+
+            }
+
+        }
+    );
+
+
+    return score;
+
+}
+
+
+/* =========================================================
+   SUBMIT QUIZ
+========================================================= */
 
 async function submitQuiz() {
 
-    const name = nameInput.value.trim();
+    const name =
+        document
+            .getElementById("girlsName")
+            .value
+            .trim();
 
-    errorBox.style.display = "none";
 
     if (!name) {
 
-        showError("Please enter your name.");
+        showToast(
+            "Please enter your name."
+        );
 
-        nameInput.focus();
-
-        return;
-    }
-
-    if (!quizId) {
-
-        showError("Quiz connection is not ready.");
+        document
+            .getElementById("girlsName")
+            .focus();
 
         return;
     }
 
-    submitBtn.disabled = true;
 
-    submitBtn.innerHTML = `
+    if (
+        !selectedQuizId
+    ) {
+
+        showToast(
+            "Please select a quiz first."
+        );
+
+        return;
+    }
+
+
+    if (
+        answers.includes(null)
+    ) {
+
+        showToast(
+            "Please answer every question."
+        );
+
+        return;
+    }
+
+
+    const score =
+        calculateScore();
+
+
+    const nextBtn =
+        document.getElementById("nextBtn");
+
+
+    nextBtn.disabled = true;
+
+
+    nextBtn.innerHTML = `
+        <i
+            data-lucide="loader-circle"
+            class="spin"
+            width="16">
+        </i>
         Saving...
-        <i data-lucide="loader-circle"></i>
     `;
+
 
     lucide.createIcons();
 
 
-    /* SAVE PARTICIPANT */
+    try {
 
-    const { error: insertError } = await db
-        .from("quiz_participants")
-        .insert({
-            quiz_id: quizId,
-            name: name,
-            score: totalScore
-        });
+        /*
+         * IMPORTANT:
+         * The participant is attached to
+         * the selected quiz.
+         */
 
-    if (insertError) {
+        const { error } =
+            await db
+                .from("quiz_participants")
+                .insert({
+                    quiz_id:selectedQuizId,
+                    name:name,
+                    score:score
+                });
 
-        console.error(insertError);
 
-        showError(
-            "Your result could not be saved. Please try again."
+        if (error) {
+            throw error;
+        }
+
+
+        /*
+         * Calculate rank only inside
+         * this selected quiz.
+         */
+
+        const {
+            data:rankData,
+            error:rankError
+        } =
+            await db.rpc(
+                "calculate_quiz_rank",
+                {
+                    p_quiz_id:selectedQuizId,
+                    p_score:score
+                }
+            );
+
+
+        if (rankError) {
+            throw rankError;
+        }
+
+
+        showResult(
+            score,
+            Number(rankData)
         );
 
-        submitBtn.disabled = false;
 
-        submitBtn.innerHTML = `
-            Submit My Score
-            <i data-lucide="check"></i>
+        showToast(
+            "Your result was saved successfully."
+        );
+
+
+    } catch(error) {
+
+        console.error(error);
+
+
+        showToast(
+            "Could not save your result. Check your Supabase setup."
+        );
+
+
+        nextBtn.disabled = false;
+
+
+        nextBtn.innerHTML = `
+            Submit
+            <i data-lucide="check" width="16"></i>
         `;
+
 
         lucide.createIcons();
 
-        return;
     }
 
-
-    /* GET RANK */
-
-    const { data: rankData, error: rankError } =
-        await db.rpc("calculate_quiz_rank", {
-            p_quiz_id: quizId,
-            p_score: totalScore
-        });
-
-    let rank = "—";
-
-    if (!rankError && rankData !== null) {
-        rank = rankData;
-    }
-
-    showResult(rank);
 }
 
 
@@ -1239,153 +2579,719 @@ async function submitQuiz() {
    RESULT
 ========================================================= */
 
-function showResult(rank) {
-
-    nameBox.style.display = "none";
-    result.style.display = "block";
-
-    finalScore.textContent = totalScore;
-    finalRank.textContent = `#${rank}`;
-
-    const feedback = getFeedback(totalScore);
-
-    resultTitle.textContent = feedback.title;
-    resultMessage.textContent = feedback.message;
-
-    lucide.createIcons();
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
-
-
-/* =========================================================
-   SCORE FEEDBACK
-========================================================= */
-
 function getFeedback(score) {
 
     if (score === 100) {
 
         return {
-            title: "👑 PERFECT SCORE",
-            message: "You understood the assignment."
+            category:"👑 PERFECT SCORE",
+            message:"You understood the assignment."
         };
 
     }
+
 
     if (score >= 91) {
 
         return {
-            title: "✨ GREEN FLAG",
-            message: "Keep it healthy."
+            category:"✨ GREEN FLAG",
+            message:"Keep it healthy."
         };
 
     }
+
 
     if (score >= 81) {
 
         return {
-            title: "💗 STRONG ENERGY",
-            message: "You’re doing pretty well."
+            category:"💗 STRONG ENERGY",
+            message:"You’re doing pretty well."
         };
 
     }
+
 
     if (score >= 71) {
 
         return {
-            title: "💕 PRETTY HEALTHY",
-            message: "Keep growing together."
+            category:"💕 PRETTY HEALTHY",
+            message:"Keep growing together."
         };
 
     }
+
 
     if (score >= 61) {
 
         return {
-            title: "💭 MIXED SIGNALS",
-            message: "Some things need attention."
+            category:"💭 MIXED SIGNALS",
+            message:"Some things need attention."
         };
 
     }
+
 
     if (score >= 51) {
 
         return {
-            title: "🌱 NEEDS WORK",
-            message: "There’s room to grow."
+            category:"🌱 NEEDS WORK",
+            message:"There’s room to grow."
         };
 
     }
 
+
     return {
-        title: "🚩 RED FLAG",
-        message: "Work on yourself 🫶"
+        category:"🚩 RED FLAG",
+        message:"Work on yourself 🫶"
     };
+
 }
 
 
-/* =========================================================
-   RESTART
-========================================================= */
+function showResult(
+    score,
+    rank
+) {
 
-restartBtn.addEventListener("click", () => {
+    const feedback =
+        getFeedback(score);
 
-    currentQuestion = 0;
-    totalScore = 0;
-    selectedScore = null;
 
-    nameInput.value = "";
+    document.getElementById(
+        "resultRank"
+    ).textContent =
+        "#" + rank;
 
-    result.style.display = "none";
-    nameBox.style.display = "none";
-    quizArea.style.display = "block";
 
-    renderQuestion();
+    document.getElementById(
+        "resultScore"
+    ).textContent =
+        score;
+
+
+    document.getElementById(
+        "resultCategory"
+    ).textContent =
+        feedback.category;
+
+
+    document.getElementById(
+        "resultMessage"
+    ).textContent =
+        feedback.message;
+
+
+    document.getElementById(
+        "girlsQuiz"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "resultWrap"
+    ).classList.add("show");
+
 
     window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+        top:0,
+        behavior:"smooth"
     });
-});
 
-
-/* =========================================================
-   ERROR
-========================================================= */
-
-function showError(message) {
-
-    errorBox.textContent = message;
-    errorBox.style.display = "block";
 }
 
 
 /* =========================================================
-   SAFE TEXT
+   RESET QUIZ
 ========================================================= */
 
-function escapeHTML(text) {
+function resetQuiz() {
 
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    currentQuestion = 0;
+
+    answers =
+        new Array(
+            questions.length
+        ).fill(null);
+
+
+    document.getElementById(
+        "girlsName"
+    ).value = "";
+
+
+    document.getElementById(
+        "girlsQuiz"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "resultWrap"
+    ).classList.remove("show");
+
+
+    const next =
+        document.getElementById("nextBtn");
+
+    next.disabled = false;
+
+
+    renderQuestions();
+
 }
 
 
 /* =========================================================
-   INITIALIZE
+   RANKING CATEGORY
 ========================================================= */
+
+function rankingCategory(score) {
+
+    if (score >= 85) {
+
+        return {
+            key:"keeper",
+            text:"KEEPER"
+        };
+
+    }
+
+
+    if (score >= 50) {
+
+        return {
+            key:"work",
+            text:"NEEDS WORK"
+        };
+
+    }
+
+
+    return {
+        key:"red",
+        text:"RED FLAG"
+    };
+
+}
+
+
+/* =========================================================
+   LOAD RANKINGS FOR SELECTED QUIZ
+========================================================= */
+
+async function loadRankings() {
+
+    const container =
+        document.getElementById(
+            "rankingList"
+        );
+
+
+    document.getElementById(
+        "selectedQuizTitle"
+    ).textContent =
+        selectedQuizTitle;
+
+
+    document.getElementById(
+        "rankingPageSubtitle"
+    ).textContent =
+        `${selectedQuizTitle} — scores ranked from highest to lowest.`;
+
+
+    container.innerHTML = `
+
+        <div class="loading">
+
+            <i
+                data-lucide="loader-circle"
+                class="spin"
+                width="20">
+            </i>
+
+            Loading rankings...
+
+        </div>
+
+    `;
+
+
+    lucide.createIcons();
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await db
+                .from("quiz_participants")
+                .select(
+                    "id,name,score,created_at"
+                )
+                .eq(
+                    "quiz_id",
+                    selectedQuizId
+                )
+                .order(
+                    "score",
+                    {
+                        ascending:false
+                    }
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending:true
+                    }
+                );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        rankingData =
+            data || [];
+
+
+        renderRankings(
+            selectedRankingFilter
+        );
+
+
+    } catch(error) {
+
+        console.error(error);
+
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                Could not load rankings.<br>
+
+                Check your Supabase table
+                and RLS policies.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   RENDER RANKINGS
+========================================================= */
+
+function renderRankings(
+    filter = "all"
+) {
+
+    const container =
+        document.getElementById(
+            "rankingList"
+        );
+
+
+    let list =
+        rankingData.slice();
+
+
+    /*
+     * The ranking position is calculated
+     * from the complete selected quiz.
+     */
+
+    const rankMap =
+        new Map();
+
+
+    let previousScore = null;
+
+    let currentRank = 0;
+
+
+    rankingData.forEach(
+        (person,index) => {
+
+            let rank;
+
+
+            if (
+                index === 0 ||
+                person.score !== previousScore
+            ) {
+
+                rank =
+                    index + 1;
+
+                currentRank =
+                    rank;
+
+            } else {
+
+                rank =
+                    currentRank;
+
+            }
+
+
+            previousScore =
+                person.score;
+
+
+            rankMap.set(
+                person.id,
+                rank
+            );
+
+        }
+    );
+
+
+    /*
+     * Filter only after ranks
+     * have been calculated.
+     */
+
+    if (filter !== "all") {
+
+        list =
+            list.filter(person => {
+
+                return rankingCategory(
+                    person.score
+                ).key === filter;
+
+            });
+
+    }
+
+
+    if (!list.length) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                ${
+                    rankingData.length
+                    ? "No participants in this category yet."
+                    : "No participants yet."
+                }
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    const rows =
+        list.map(person => {
+
+            const rank =
+                rankMap.get(person.id);
+
+
+            const category =
+                rankingCategory(
+                    person.score
+                );
+
+
+            /*
+             * IMPORTANT:
+             *
+             * #1, #2 and #3:
+             * real name.
+             *
+             * #4 and below:
+             * ***
+             *
+             * The actual database name
+             * is never changed.
+             */
+
+            const displayName =
+                rank <= 3
+                ? person.name
+                : "***";
+
+
+            return `
+
+                <div class="rank-row">
+
+                    <div class="rank-number">
+                        #${rank}
+                    </div>
+
+                    <div class="rank-name">
+                        ${escapeHTML(displayName)}
+                    </div>
+
+                    <div class="rank-score">
+                        ${person.score}/100
+                    </div>
+
+                    <div class="rank-category">
+                        ${category.text}
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+
+    container.innerHTML =
+        rows;
+
+}
+
+
+/* =========================================================
+   RANKING FILTER
+========================================================= */
+
+function filterRanking(
+    filter,
+    button
+) {
+
+    selectedRankingFilter =
+        filter;
+
+
+    document
+        .querySelectorAll(".rank-tab")
+        .forEach(tab =>
+            tab.classList.remove(
+                "active"
+            )
+        );
+
+
+    button.classList.add(
+        "active"
+    );
+
+
+    renderRankings(
+        filter
+    );
+
+}
+
+
+/* =========================================================
+   ADMIN AUTH
+========================================================= */
+
+async function adminLogin() {
+
+    const email =
+        document
+            .getElementById("adminEmail")
+            .value
+            .trim();
+
+
+    const password =
+        document
+            .getElementById("adminPassword")
+            .value;
+
+
+    if (!email || !password) {
+
+        showToast(
+            "Enter your email and password."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await db.auth
+                .signInWithPassword({
+                    email,
+                    password
+                });
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        showToast(
+            "Admin login successful."
+        );
+
+
+    } catch(error) {
+
+        console.error(error);
+
+
+        showToast(
+            error.message ||
+            "Login failed."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+
+function escapeAttribute(value) {
+
+    return String(value)
+        .replaceAll("\\","\\\\")
+        .replaceAll("'","\\'")
+        .replaceAll('"',"&quot;");
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(() => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },3000);
+
+}
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+renderQuestions();
 
 lucide.createIcons();
 
-loadQuiz();
+loadQuizDefinitions();
+
+
+/*
+ * Default ranking:
+ * Girls Quiz 1
+ */
+
+async function initializeDefaultRanking() {
+
+    const {
+        data,
+        error
+    } =
+        await db
+            .from("quizzes")
+            .select(
+                "id,gender,quiz_number,title"
+            )
+            .eq(
+                "gender",
+                "girls"
+            )
+            .eq(
+                "quiz_number",
+                1
+            )
+            .single();
+
+
+    if (!error && data) {
+
+        selectedQuizId =
+            data.id;
+
+        selectedQuizGender =
+            data.gender;
+
+        selectedQuizNumber =
+            data.quiz_number;
+
+        selectedQuizTitle =
+            data.title;
+
+        document.getElementById(
+            "selectedQuizTitle"
+        ).textContent =
+            data.title;
+
+    }
+
+}
+
+
+initializeDefaultRanking();
+
 </script>
 
 </body>
