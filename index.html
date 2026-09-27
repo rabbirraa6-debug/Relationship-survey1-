@@ -4,205 +4,369 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Relationship Test</title>
+<title>Relationship Quiz</title>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 * {
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(135deg, #eef8ff, #f7fff9);
-    color: #17202a;
+    font-family: Inter, Arial, sans-serif;
+    background: #f7f9fc;
+    color: #172033;
+    min-height: 100vh;
+    user-select: none;
+}
+
+input,
+textarea,
+select {
+    user-select: text;
 }
 
 button,
-input,
-label {
+input {
     font: inherit;
 }
 
 button {
     cursor: pointer;
+    border: 0;
 }
 
 .app {
     min-height: 100vh;
 }
 
-/* =========================
-   HEADER
-========================= */
+/* ================= SIDEBAR ================= */
 
-.header {
-    padding: 22px 18px;
-    text-align: center;
-    background: white;
-    border-bottom: 1px solid #e8edf2;
-}
-
-.header h1 {
-    margin: 0;
-    font-size: 24px;
-}
-
-.header p {
-    margin: 7px 0 0;
-    color: #7b8794;
-    font-size: 13px;
-}
-
-/* =========================
-   NAVIGATION
-========================= */
-
-.nav {
-    display: flex;
-    gap: 8px;
-    padding: 12px;
-    background: white;
-    border-bottom: 1px solid #e8edf2;
-    position: sticky;
+.sidebar {
+    position: fixed;
+    left: 0;
     top: 0;
-    z-index: 20;
+    bottom: 0;
+    width: 245px;
+    background: #ffffff;
+    border-right: 1px solid #e8ecf3;
+    padding: 24px 15px;
+    z-index: 100;
 }
 
-.nav button {
-    flex: 1;
-    border: 0;
-    padding: 12px 8px;
-    border-radius: 12px;
-    background: #f1f5f8;
-    color: #53606c;
-    font-weight: 700;
-    font-size: 12px;
-}
-
-.nav button.active {
-    background: #dff2ff;
-    color: #0877b9;
-}
-
-/* =========================
-   MAIN
-========================= */
-
-.container {
-    width: min(720px, 94%);
-    margin: 25px auto 100px;
-}
-
-/* =========================
-   HOME
-========================= */
-
-.home-card {
-    background: white;
-    border-radius: 24px;
-    padding: 30px 22px;
-    box-shadow: 0 12px 35px rgba(30, 60, 80, 0.08);
-    text-align: center;
-}
-
-.home-card h2 {
-    margin-top: 0;
-    font-size: 26px;
-}
-
-.home-card p {
-    color: #687582;
-    line-height: 1.6;
-}
-
-.start-btn {
-    width: 100%;
-    margin-top: 18px;
-    border: 0;
-    border-radius: 14px;
-    padding: 15px;
-    background: #1597d4;
-    color: white;
-    font-weight: 800;
-    font-size: 15px;
-}
-
-/* =========================
-   UNAVAILABLE
-========================= */
-
-.unavailable {
-    background: white;
-    border-radius: 22px;
-    padding: 35px 20px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(30, 60, 80, 0.07);
-}
-
-.unavailable h2 {
-    margin-top: 0;
-}
-
-/* =========================
-   PROGRESS
-========================= */
-
-.progress-area {
-    margin-bottom: 18px;
-}
-
-.progress-text {
+.logo {
     display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: #75818c;
+    align-items: center;
+    gap: 11px;
+    padding: 5px 12px 28px;
+    font-weight: 800;
+    font-size: 18px;
+}
+
+.logo-icon {
+    width: 39px;
+    height: 39px;
+    border-radius: 13px;
+    background: linear-gradient(135deg,#4b8cff,#ff72b6);
+    color: white;
+    display: grid;
+    place-items: center;
+}
+
+.nav-title {
+    font-size: 10px;
+    font-weight: 800;
+    color: #9ba4b4;
+    letter-spacing: 1.5px;
+    padding: 0 13px 9px;
+}
+
+.nav-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 13px;
+    border-radius: 12px;
+    color: #697386;
+    background: transparent;
+    margin-bottom: 5px;
+    transition: .2s;
+    text-align: left;
+}
+
+.nav-item:hover {
+    background: #f3f6fb;
+    color: #356edc;
+}
+
+.nav-item.active {
+    background: #edf4ff;
+    color: #3274e8;
+    font-weight: 700;
+}
+
+.nav-item i {
+    width: 18px;
+}
+
+/* ================= MAIN ================= */
+
+.main {
+    margin-left: 245px;
+    min-height: 100vh;
+    padding: 30px;
+}
+
+.page {
+    display: none;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.page.active {
+    display: block;
+}
+
+.page-header {
+    margin-bottom: 25px;
+}
+
+.page-header h1 {
+    font-size: clamp(27px,5vw,40px);
     margin-bottom: 7px;
 }
 
-.progress {
-    height: 8px;
-    background: #e8edf1;
+.page-header p {
+    color: #758095;
+}
+
+/* ================= HOME ================= */
+
+.hero {
+    min-height: 440px;
+    border-radius: 30px;
+    padding: 50px;
+    background:
+        radial-gradient(circle at 85% 15%,rgba(255,116,183,.23),transparent 28%),
+        radial-gradient(circle at 15% 85%,rgba(73,137,255,.2),transparent 30%),
+        white;
+    border: 1px solid #e8edf5;
+    display: flex;
+    align-items: center;
+}
+
+.hero-content {
+    max-width: 700px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 13px;
+    border-radius: 30px;
+    background: #f0f5ff;
+    color: #477ee0;
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 18px;
+}
+
+.hero h1 {
+    font-size: clamp(38px,7vw,68px);
+    line-height: .98;
+    letter-spacing: -2px;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg,#367af0,#e65eaa);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    color: #697386;
+    font-size: 17px;
+    line-height: 1.7;
+    margin: 20px 0 27px;
+    max-width: 600px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border-radius: 13px;
+    padding: 13px 18px;
+    font-weight: 750;
+    transition: .2s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg,#397df2,#5c94f8);
+    color: white;
+    box-shadow: 0 10px 25px rgba(57,125,242,.2);
+}
+
+.btn-pink {
+    background: linear-gradient(135deg,#e95eaa,#ff83c4);
+    color: white;
+}
+
+.btn-dark {
+    background: #29203c;
+    color: white;
+}
+
+/* ================= CARDS ================= */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 17px;
+    margin-top: 20px;
+}
+
+.info-card {
+    padding: 23px;
+    background: white;
+    border: 1px solid #e8ecf3;
     border-radius: 20px;
+}
+
+.info-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 15px;
+}
+
+.info-card h3 {
+    margin-bottom: 7px;
+}
+
+.info-card p {
+    color: #788397;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* ================= SURVEY ================= */
+
+.survey-page {
+    min-height: calc(100vh - 60px);
+}
+
+.survey-shell {
+    border-radius: 27px;
+    padding: 28px;
+    background: white;
+    border: 1px solid #e8ecf3;
+}
+
+.girls-page .survey-shell {
+    background:
+        radial-gradient(circle at 80% 0%,rgba(255,88,174,.18),transparent 30%),
+        linear-gradient(145deg,#fff,#fff5fb);
+    border-color: #ffd5e9;
+}
+
+.boys-page .survey-shell {
+    background:
+        radial-gradient(circle at 80% 0%,rgba(125,74,220,.2),transparent 30%),
+        linear-gradient(145deg,#181321,#251b34);
+    color: white;
+    border-color: #3b2c52;
+}
+
+.name-section {
+    margin-bottom: 27px;
+}
+
+.name-section label {
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.name-input {
+    width: 100%;
+    padding: 15px;
+    border-radius: 13px;
+    border: 1px solid #dfe5ef;
+    outline: none;
+    background: white;
+}
+
+.name-input:focus {
+    border-color: #6c98ed;
+    box-shadow: 0 0 0 4px rgba(79,134,238,.1);
+}
+
+.progress-wrap {
+    margin-bottom: 27px;
+}
+
+.progress-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 800;
+    color: #8490a3;
+    margin-bottom: 8px;
+}
+
+.progress {
+    height: 7px;
+    border-radius: 20px;
+    background: #e9edf4;
     overflow: hidden;
 }
 
 .progress-bar {
     height: 100%;
     width: 4%;
-    background: #1597d4;
-    transition: width .25s ease;
-}
-
-/* =========================
-   QUESTION
-========================= */
-
-.question-card {
-    background: white;
-    border-radius: 22px;
-    padding: 23px 18px;
-    box-shadow: 0 10px 30px rgba(30, 60, 80, 0.07);
-}
-
-.question-number {
-    color: #1597d4;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
+    background: linear-gradient(90deg,#4385f4,#ec67b1);
+    transition: .3s;
 }
 
 .question {
-    font-size: 19px;
-    line-height: 1.45;
-    margin: 0 0 20px;
+    display: none;
 }
 
-/* =========================
-   OPTIONS
-========================= */
+.question.active {
+    display: block;
+}
+
+.question-number {
+    font-size: 12px;
+    color: #8791a4;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.question h2 {
+    font-size: clamp(20px,4vw,29px);
+    line-height: 1.35;
+    margin-bottom: 21px;
+}
 
 .options {
     display: grid;
@@ -210,184 +374,360 @@ button {
 }
 
 .option {
-    position: relative;
-}
-
-.option input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.option label {
-    display: block;
-    padding: 15px;
-    border: 2px solid #e6ebef;
-    border-radius: 14px;
-    background: #fff;
-    cursor: pointer;
-    transition: .2s;
-    line-height: 1.4;
-}
-
-.option label:hover {
-    border-color: #9bd6f3;
-}
-
-.option input:checked + label {
-    border-color: #1597d4;
-    background: #eef9ff;
-    color: #0877b9;
-    font-weight: 700;
-}
-
-/* =========================
-   CONTROLS
-========================= */
-
-.controls {
+    width: 100%;
+    text-align: left;
+    padding: 16px;
+    border-radius: 15px;
+    border: 1px solid #e2e7ef;
+    background: #fafbfd;
     display: flex;
-    gap: 10px;
-    margin-top: 18px;
+    align-items: center;
+    gap: 12px;
+    transition: .2s;
 }
 
-.controls button {
-    flex: 1;
-    padding: 14px;
-    border-radius: 13px;
-    border: 0;
+.option:hover {
+    border-color: #80a9ee;
+    background: #f3f7ff;
+}
+
+.option.selected {
+    border-color: #4d89ee;
+    background: #edf4ff;
+    box-shadow: 0 0 0 2px rgba(77,137,238,.08);
+}
+
+.option-letter {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: #edf0f5;
+    font-size: 12px;
     font-weight: 800;
 }
 
-.back-btn {
-    background: #edf1f4;
-    color: #52606d;
-}
-
-.next-btn {
-    background: #1597d4;
+.option.selected .option-letter {
+    background: #4b85ed;
     color: white;
 }
 
-.submit-btn {
-    background: #39a96b;
-    color: white;
+.question-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 25px;
 }
 
-/* =========================
-   RESULT
-========================= */
+/* ================= RESULT ================= */
 
-.result-wrapper {
+.result-wrap {
     display: none;
+    justify-content: center;
+}
+
+.result-wrap.show {
+    display: flex;
 }
 
 .result-card {
-    width: min(390px, 100%);
-    margin: 20px auto;
-    padding: 25px 15px;
+    width: min(100%,440px);
+    padding: 28px 22px;
+    background: white;
+    border-radius: 25px;
+    border: 1px solid #e8ecf3;
     text-align: center;
-    border-radius: 20px;
-    background: #ffffff;
-    box-shadow: 0 12px 35px rgba(30, 60, 80, 0.10);
 }
 
-.result-line {
-    color: #7b8a99;
-    font-size: 13px;
-    margin: 5px 0 25px;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-.result-title {
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: #222;
-    margin-bottom: 15px;
-}
-
-.result-rank {
-    font-size: 38px;
-    font-weight: 800;
-    color: #111827;
-    line-height: 1;
-}
-
-.result-label {
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    color: #8a8f98;
-    margin-top: 7px;
+.heart-line {
+    color: #ef6ab0;
+    letter-spacing: 3px;
     margin-bottom: 20px;
 }
 
+.result-title {
+    font-size: 13px;
+    letter-spacing: 2px;
+    font-weight: 900;
+    color: #8b95a8;
+}
+
+.result-rank {
+    font-size: 62px;
+    font-weight: 900;
+    line-height: 1;
+    margin: 8px 0 3px;
+    color: #3779e7;
+}
+
+.result-label {
+    color: #8791a3;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+}
+
 .result-score {
-    font-size: 30px;
-    font-weight: 800;
-    color: #111827;
+    font-size: 37px;
+    font-weight: 900;
+    margin-top: 23px;
+}
+
+.result-score span {
+    color: #8b94a4;
+    font-size: 18px;
 }
 
 .result-divider {
-    margin: 22px 0 18px;
+    margin: 22px 0;
+    color: #b4bcc9;
     font-size: 12px;
-    letter-spacing: 1px;
-    color: #9aa1aa;
 }
 
-.result-feedback-title {
-    font-size: 16px;
-    font-weight: 800;
-    margin-bottom: 6px;
+.result-category {
+    font-weight: 900;
+    font-size: 17px;
+    margin-bottom: 5px;
 }
 
-.result-feedback {
+.result-message {
+    color: #758095;
     font-size: 13px;
-    color: #666;
 }
 
 .result-thanks {
     margin-top: 25px;
     font-size: 13px;
+    color: #7d8799;
     line-height: 1.6;
-    color: #777;
 }
 
-.result-note {
-    margin-top: 18px;
-    text-align: center;
-    color: #8a949d;
+/* ================= RANKINGS ================= */
+
+.rank-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.rank-tab {
+    padding: 10px 15px;
+    border-radius: 11px;
+    background: white;
+    border: 1px solid #e1e6ef;
+    color: #758095;
+    font-weight: 700;
+}
+
+.rank-tab.active {
+    background: #edf4ff;
+    color: #3477e7;
+    border-color: #cfe0ff;
+}
+
+.ranking-container {
+    background: white;
+    border: 1px solid #e6ebf2;
+    border-radius: 21px;
+    overflow: hidden;
+}
+
+.rank-row {
+    display: grid;
+    grid-template-columns: 65px 1fr 100px 120px;
+    align-items: center;
+    padding: 15px 18px;
+    border-bottom: 1px solid #eef1f5;
+}
+
+.rank-row:last-child {
+    border-bottom: 0;
+}
+
+.rank-number {
+    font-weight: 900;
+    color: #778195;
+}
+
+.rank-name {
+    font-weight: 750;
+}
+
+.rank-score {
+    text-align: right;
+    font-weight: 900;
+}
+
+.rank-category {
+    text-align: right;
     font-size: 11px;
+    font-weight: 800;
+    color: #7d8799;
 }
 
-/* =========================
-   MOBILE
-========================= */
+.loading {
+    padding: 35px;
+    text-align: center;
+    color: #8791a3;
+}
 
-@media (max-width: 500px) {
+.empty {
+    padding: 35px;
+    text-align: center;
+    color: #8791a3;
+}
 
-    .header h1 {
+/* ================= ADMIN ================= */
+
+.admin-box {
+    max-width: 450px;
+    background: white;
+    border: 1px solid #e7ebf2;
+    border-radius: 23px;
+    padding: 25px;
+}
+
+.admin-box input {
+    width: 100%;
+    padding: 14px;
+    margin: 7px 0 14px;
+    border: 1px solid #dfe5ef;
+    border-radius: 12px;
+    outline: none;
+}
+
+.admin-note {
+    margin-top: 14px;
+    font-size: 12px;
+    color: #8993a4;
+    line-height: 1.6;
+}
+
+/* ================= MOBILE NAV ================= */
+
+.bottom-nav {
+    display: none;
+}
+
+@media(max-width:850px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 18px 15px 95px;
+    }
+
+    .bottom-nav {
+        position: fixed;
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        height: 66px;
+        background: rgba(255,255,255,.96);
+        backdrop-filter: blur(15px);
+        border: 1px solid #e3e8f0;
+        border-radius: 20px;
+        z-index: 200;
+        box-shadow: 0 10px 35px rgba(24,40,70,.12);
+    }
+
+    .bottom-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        color: #8992a3;
+        background: transparent;
+        font-size: 9px;
+        font-weight: 800;
+    }
+
+    .bottom-item.active {
+        color: #397be9;
+    }
+
+    .bottom-item i {
+        width: 18px;
+    }
+
+    .hero {
+        padding: 30px 23px;
+        min-height: 430px;
+        border-radius: 23px;
+    }
+
+    .hero h1 {
+        font-size: 44px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .survey-shell {
+        padding: 18px;
+        border-radius: 20px;
+    }
+
+    .rank-row {
+        grid-template-columns: 45px 1fr 70px;
+    }
+
+    .rank-category {
+        display: none;
+    }
+
+    .rank-score {
+        font-size: 14px;
+    }
+}
+
+@media(max-width:450px) {
+    .hero h1 {
+        font-size: 39px;
+    }
+
+    .question h2 {
         font-size: 21px;
     }
 
-    .container {
-        width: 94%;
-        margin-top: 18px;
+    .question-actions .btn {
+        padding: 11px 13px;
+        font-size: 13px;
     }
+}
 
-    .question {
-        font-size: 17px;
-    }
+/* ================= TOAST ================= */
 
-    .option label {
-        padding: 14px;
-        font-size: 14px;
-    }
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 90px;
+    transform: translate(-50%,20px);
+    background: #1e2634;
+    color: white;
+    padding: 12px 17px;
+    border-radius: 12px;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: .25s;
+    z-index: 500;
+    max-width: calc(100% - 30px);
+    text-align: center;
+}
 
-    .result-card {
-        padding: 23px 10px;
-    }
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%,0);
 }
 </style>
 </head>
@@ -396,162 +736,211 @@ button {
 
 <div class="app">
 
-    <header class="header">
-        <h1>♡ Relationship Test</h1>
-        <p>25 questions • Choose the answer that feels right</p>
-    </header>
+<!-- ================= SIDEBAR ================= -->
 
-    <!-- NAVIGATION -->
-    <nav class="nav">
-        <button id="homeNav" class="active" onclick="showPage('home')">
-            Home
-        </button>
+<aside class="sidebar">
 
-        <button id="girlsNav" onclick="showPage('girls')">
-            Girls Survey
-        </button>
+    <div class="logo">
+        <div class="logo-icon">
+            <i data-lucide="heart"></i>
+        </div>
+        Relationship Quiz
+    </div>
 
-        <button onclick="showPage('boys')">
-            Boys Survey
-        </button>
-    </nav>
+    <div class="nav-title">MENU</div>
 
-    <main class="container">
+    <button class="nav-item active" data-page="home">
+        <i data-lucide="house"></i>
+        Home
+    </button>
 
-        <!-- =========================
-             HOME
-        ========================== -->
+    <button class="nav-item" data-page="girls">
+        <i data-lucide="sparkles"></i>
+        Girls Survey
+    </button>
 
-        <section id="homePage">
+    <button class="nav-item" data-page="boys">
+        <i data-lucide="zap"></i>
+        Boys Survey
+    </button>
 
-            <div class="home-card">
+    <button class="nav-item" data-page="rankings">
+        <i data-lucide="trophy"></i>
+        Rankings
+    </button>
 
-                <h2>♡ Relationship Test</h2>
+    <button class="nav-item" data-page="admin">
+        <i data-lucide="shield"></i>
+        Admin Login
+    </button>
 
-                <p>
-                    25 real-life relationship situations.
-                    Choose what you would expect or do.
-                </p>
+</aside>
 
-                <p>
-                    Your answers create a score out of
-                    <strong>100</strong>.
-                </p>
+<!-- ================= MAIN ================= -->
 
-                <button class="start-btn" onclick="startGirlsSurvey()">
-                    Start Girls Survey
-                </button>
+<main class="main">
 
+<!-- HOME -->
+
+<section class="page active" id="home">
+
+    <div class="hero">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                <i data-lucide="heart" width="14"></i>
+                RELATIONSHIP TEST
             </div>
 
-        </section>
+            <h1>
+                How healthy is your
+                <span class="gradient-text">relationship?</span>
+            </h1>
+
+            <p>
+                Answer honestly. Your choices reveal how you
+                handle trust, freedom, boundaries and communication
+                in a relationship.
+            </p>
+
+            <button class="btn btn-primary"
+                    onclick="showPage('girls')">
+                Start Girls Survey
+                <i data-lucide="arrow-right" width="17"></i>
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="cards">
+
+        <div class="info-card">
+            <div class="info-icon"
+                 style="background:#edf4ff;color:#397be9">
+                <i data-lucide="list-checks"></i>
+            </div>
+            <h3>25 Questions</h3>
+            <p>
+                Real relationship situations about
+                trust, privacy, freedom and boundaries.
+            </p>
+        </div>
+
+        <div class="info-card">
+            <div class="info-icon"
+                 style="background:#fff0f8;color:#e75ca9">
+                <i data-lucide="heart-handshake"></i>
+            </div>
+            <h3>Honest Answers</h3>
+            <p>
+                There are no perfect answers except
+                the ones that genuinely reflect you.
+            </p>
+        </div>
+
+        <div class="info-card">
+            <div class="info-icon"
+                 style="background:#f1edff;color:#7959d9">
+                <i data-lucide="trophy"></i>
+            </div>
+            <h3>See Your Rank</h3>
+            <p>
+                Your score is compared with everyone
+                already in the ranking.
+            </p>
+        </div>
+
+    </div>
+
+</section>
 
 
-        <!-- =========================
-             GIRLS SURVEY
-        ========================== -->
+<!-- GIRLS -->
 
-        <section id="girlsPage" style="display:none;">
+<section class="page girls-page" id="girls">
 
-            <div class="progress-area">
+    <div class="page-header">
+        <div class="badge">
+            <i data-lucide="sparkles" width="14"></i>
+            GIRLS SURVEY
+        </div>
+        <h1>Relationship Test 💗</h1>
+        <p>Answer every question honestly.</p>
+    </div>
 
-                <div class="progress-text">
-                    <span id="progressQuestion">Question 1 of 25</span>
+    <div class="survey-shell">
+
+        <div class="name-section">
+            <label>Your name</label>
+            <input
+                id="girlsName"
+                class="name-input"
+                maxlength="100"
+                placeholder="Enter your name"
+                autocomplete="off"
+            >
+        </div>
+
+        <div id="girlsQuiz">
+
+            <div class="progress-wrap">
+                <div class="progress-top">
+                    <span id="progressText">Question 1 of 25</span>
                     <span id="progressPercent">4%</span>
                 </div>
 
                 <div class="progress">
-                    <div class="progress-bar" id="progressBar"></div>
+                    <div class="progress-bar"
+                         id="progressBar"></div>
                 </div>
-
             </div>
 
-            <div class="question-card">
+            <div id="questions"></div>
 
-                <div class="question-number" id="questionNumber">
-                    QUESTION 1
-                </div>
-
-                <h2 class="question" id="questionText"></h2>
-
-                <div class="options" id="options"></div>
-
-                <div class="controls">
-
-                    <button
-                        class="back-btn"
-                        id="backButton"
+            <div class="question-actions">
+                <button class="btn"
+                        id="prevBtn"
+                        style="background:#f0f2f6;color:#667084"
                         onclick="previousQuestion()">
-                        Back
-                    </button>
+                    <i data-lucide="arrow-left" width="16"></i>
+                    Previous
+                </button>
 
-                    <button
-                        class="next-btn"
-                        id="nextButton"
+                <button class="btn btn-pink"
+                        id="nextBtn"
                         onclick="nextQuestion()">
-                        Next
-                    </button>
-
-                    <button
-                        class="submit-btn"
-                        id="submitButton"
-                        onclick="submitSurvey()"
-                        style="display:none;">
-                        Submit
-                    </button>
-
-                </div>
-
+                    Next
+                    <i data-lucide="arrow-right" width="16"></i>
+                </button>
             </div>
 
-        </section>
+        </div>
 
-
-        <!-- =========================
-             BOYS SURVEY
-        ========================== -->
-
-        <section id="boysPage" style="display:none;">
-
-            <div class="unavailable">
-
-                <h2>♡ Boys Survey</h2>
-
-                <p>
-                    This survey is currently unavailable.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             RESULT
-        ========================== -->
-
-        <section id="resultPage" class="result-wrapper">
+        <div class="result-wrap" id="resultWrap">
 
             <div class="result-card">
 
-                <div class="result-line">
-                    ♡ ───────────────────── ♡
+                <div class="heart-line">
+                    ♡ ───────────── ♡
                 </div>
 
                 <div class="result-title">
                     YOUR RESULT
                 </div>
 
-                <div class="result-rank" id="userRank">
-                    #37
+                <div class="result-rank" id="resultRank">
+                    #--
                 </div>
 
                 <div class="result-label">
                     YOUR RANK
                 </div>
 
-                <div class="result-score" id="userScore">
-                    72 / 100
+                <div class="result-score">
+                    <span id="resultScore">--</span>
+                    <span>/ 100</span>
                 </div>
 
                 <div class="result-label">
@@ -562,16 +951,14 @@ button {
                     ── relationship test ──
                 </div>
 
-                <div
-                    class="result-feedback-title"
-                    id="feedbackTitle">
-                    💕 PRETTY HEALTHY
+                <div class="result-category"
+                     id="resultCategory">
+                    --
                 </div>
 
-                <div
-                    class="result-feedback"
-                    id="feedbackText">
-                    Keep growing together.
+                <div class="result-message"
+                     id="resultMessage">
+                    --
                 </div>
 
                 <div class="result-thanks">
@@ -579,19 +966,230 @@ button {
                     participating ♡
                 </div>
 
-                <div class="result-line">
-                    ♡ ───────────────────── ♡
+                <div style="margin-top:22px">
+                    <button class="btn btn-primary"
+                            onclick="showPage('rankings');loadRankings()">
+                        View Rankings
+                        <i data-lucide="trophy" width="16"></i>
+                    </button>
                 </div>
 
             </div>
 
-            <div class="result-note">
-                Your result is based on your answers.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- BOYS -->
+
+<section class="page boys-page" id="boys">
+
+    <div class="page-header">
+        <div class="badge"
+             style="background:#332844;color:#b89cff">
+            <i data-lucide="zap" width="14"></i>
+            BOYS SURVEY
+        </div>
+
+        <h1>Coming Soon</h1>
+
+        <p>
+            The boys version of the relationship test
+            will be available here.
+        </p>
+    </div>
+
+    <div class="survey-shell">
+
+        <div style="
+            text-align:center;
+            padding:60px 20px;
+        ">
+
+            <div style="
+                width:70px;
+                height:70px;
+                border-radius:22px;
+                margin:auto;
+                display:grid;
+                place-items:center;
+                background:#342744;
+                color:#b48cff;
+            ">
+                <i data-lucide="zap" width="31"></i>
             </div>
 
-        </section>
+            <h2 style="margin-top:20px">
+                Boys Survey
+            </h2>
 
-    </main>
+            <p style="
+                color:#9b91aa;
+                margin-top:8px;
+            ">
+                Coming soon.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- RANKINGS -->
+
+<section class="page" id="rankings">
+
+    <div class="page-header">
+
+        <div class="badge">
+            <i data-lucide="trophy" width="14"></i>
+            RANKINGS
+        </div>
+
+        <h1>Relationship Rankings</h1>
+
+        <p>
+            Scores are ranked from highest to lowest.
+        </p>
+
+    </div>
+
+    <div class="rank-tabs">
+
+        <button class="rank-tab active"
+                onclick="filterRanking('all',this)">
+            All
+        </button>
+
+        <button class="rank-tab"
+                onclick="filterRanking('keeper',this)">
+            Keepers
+        </button>
+
+        <button class="rank-tab"
+                onclick="filterRanking('work',this)">
+            Needs Work
+        </button>
+
+        <button class="rank-tab"
+                onclick="filterRanking('red',this)">
+            Red Flags
+        </button>
+
+    </div>
+
+    <div class="ranking-container"
+         id="rankingList">
+
+        <div class="loading">
+            Loading rankings...
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ADMIN -->
+
+<section class="page" id="admin">
+
+    <div class="page-header">
+
+        <div class="badge">
+            <i data-lucide="shield" width="14"></i>
+            ADMIN
+        </div>
+
+        <h1>Admin Login</h1>
+
+        <p>
+            Sign in using your Supabase Auth account.
+        </p>
+
+    </div>
+
+    <div class="admin-box">
+
+        <label style="font-size:13px;font-weight:800">
+            Email
+        </label>
+
+        <input
+            id="adminEmail"
+            type="email"
+            placeholder="admin@example.com"
+            autocomplete="email"
+        >
+
+        <label style="font-size:13px;font-weight:800">
+            Password
+        </label>
+
+        <input
+            id="adminPassword"
+            type="password"
+            placeholder="Password"
+            autocomplete="current-password"
+        >
+
+        <button class="btn btn-primary"
+                style="width:100%"
+                onclick="adminLogin()">
+
+            <i data-lucide="log-in" width="16"></i>
+            Login
+
+        </button>
+
+        <div class="admin-note">
+            Admin authentication is handled by Supabase.
+            No admin password is stored inside this HTML file.
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- MOBILE NAV -->
+
+<nav class="bottom-nav">
+
+    <button class="bottom-item active"
+            data-page="home">
+        <i data-lucide="house"></i>
+        Home
+    </button>
+
+    <button class="bottom-item"
+            data-page="girls">
+        <i data-lucide="sparkles"></i>
+        Girls
+    </button>
+
+    <button class="bottom-item"
+            data-page="boys">
+        <i data-lucide="zap"></i>
+        Boys
+    </button>
+
+    <button class="bottom-item"
+            data-page="rankings">
+        <i data-lucide="trophy"></i>
+        Rankings
+    </button>
+
+</nav>
+
+<div class="toast" id="toast"></div>
 
 </div>
 
@@ -599,451 +1197,416 @@ button {
 <script>
 
 /* =========================================================
-   25 QUESTIONS
-========================================================= */
+   SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+    "https://wmsjpbcwhqghqtytztvv.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_wVDgY_X5-1d4GvHx6Mg8kQ_SD1RptNc";
+
+const { createClient } = supabase;
+
+const db = createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+
+/* =========================================================
+   QUESTIONS
+   ========================================================= */
 
 const questions = [
 
 {
-    question: "I go out with a male friend without telling my boyfriend. What would I expect him to do?",
-    options: [
-        ["Ask me calmly about it", 3],
-        ["Give me space and discuss it later", 4],
-        ["Get upset and demand an explanation", 1],
-        ["Ignore it completely", 2]
-    ]
-},
+q:"I go out with a male friend without telling my boyfriend. What would I expect him to do?",
+options:[
+["Ask me calmly about it",3],
+["Give me space and discuss it later",4],
+["Get upset and demand an explanation",1],
+["Ignore it completely",2]
+]},
 
 {
-    question: "I post a photo online that my boyfriend dislikes. What would I expect him to do?",
-    options: [
-        ["Ask me to remove it", 2],
-        ["Tell me honestly how he feels", 4],
-        ["Tell me what I can post", 1],
-        ["Discuss why it bothers him", 3]
-    ]
-},
+q:"I post a photo online that my boyfriend dislikes. What would I expect him to do?",
+options:[
+["Ask me to remove it",2],
+["Tell me honestly how he feels",4],
+["Tell me what I can post",1],
+["Discuss why it bothers him",3]
+]},
 
 {
-    question: "I spend the evening with my friends instead of my boyfriend. What would I expect him to do?",
-    options: [
-        ["Respect my plans", 4],
-        ["Ask me to choose between them", 1],
-        ["Tell me he feels neglected", 3],
-        ["Give me the silent treatment", 2]
-    ]
-},
+q:"I spend the evening with my friends instead of my boyfriend. What would I expect him to do?",
+options:[
+["Respect my plans",4],
+["Ask me to choose between them",1],
+["Tell me he feels neglected",3],
+["Give me the silent treatment",2]
+]},
 
 {
-    question: "I receive a late-night message from another man and reply to him. What would I expect my boyfriend to do?",
-    options: [
-        ["Ask who he is", 3],
-        ["Check my messages", 1],
-        ["Tell me he feels uncomfortable", 4],
-        ["Ignore the situation", 2]
-    ]
-},
+q:"I receive a late-night message from another man and reply to him. What would I expect my boyfriend to do?",
+options:[
+["Ask who he is",3],
+["Check my messages",1],
+["Tell me he feels uncomfortable",4],
+["Ignore the situation",2]
+]},
 
 {
-    question: "I tell my boyfriend that I need more personal space. What would I expect him to do?",
-    options: [
-        ["Give me more freedom", 4],
-        ["Ask what I mean by space", 3],
-        ["Become more controlling", 1],
-        ["Give me time without pressure", 2]
-    ]
-},
+q:"I tell my boyfriend that I need more personal space. What would I expect him to do?",
+options:[
+["Give me more freedom",4],
+["Ask what I mean by space",3],
+["Become more controlling",1],
+["Give me time without pressure",2]
+]},
 
 {
-    question: "I keep my phone private while spending time with my boyfriend. What would I expect him to do?",
-    options: [
-        ["Ask why I am being private", 3],
-        ["Respect my phone privacy", 4],
-        ["Demand to see it", 1],
-        ["Become suspicious immediately", 2]
-    ]
-},
+q:"I keep my phone private while spending time with my boyfriend. What would I expect him to do?",
+options:[
+["Ask why I am being private",3],
+["Respect my phone privacy",4],
+["Demand to see it",1],
+["Become suspicious immediately",2]
+]},
 
 {
-    question: "I wear something my boyfriend considers too revealing. What would I expect him to do?",
-    options: [
-        ["Tell me how he feels", 4],
-        ["Tell me to change", 1],
-        ["Ask why I chose it", 3],
-        ["Ignore his feelings completely", 2]
-    ]
-},
+q:"I wear something my boyfriend considers too revealing. What would I expect him to do?",
+options:[
+["Tell me how he feels",4],
+["Tell me to change",1],
+["Ask why I chose it",3],
+["Ignore his feelings completely",2]
+]},
 
 {
-    question: "I want to travel with my friends without my boyfriend. What would I expect him to do?",
-    options: [
-        ["Trust me and let me go", 4],
-        ["Ask about the plans", 3],
-        ["Tell me I should not go", 1],
-        ["Ask me to cancel the trip", 2]
-    ]
-},
+q:"I want to travel with my friends without my boyfriend. What would I expect him to do?",
+options:[
+["Trust me and let me go",4],
+["Ask about the plans",3],
+["Tell me I should not go",1],
+["Ask me to cancel the trip",2]
+]},
 
 {
-    question: "I become close friends with a new male classmate. What would I expect my boyfriend to do?",
-    options: [
-        ["Ask about the friendship", 3],
-        ["Trust me unless there is a reason not to", 4],
-        ["Tell me to stop talking to him", 1],
-        ["Become distant toward me", 2]
-    ]
-},
+q:"I become close friends with a new male classmate. What would I expect my boyfriend to do?",
+options:[
+["Ask about the friendship",3],
+["Trust me unless there is a reason not to",4],
+["Tell me to stop talking to him",1],
+["Become distant toward me",2]
+]},
 
 {
-    question: "I decide not to post our relationship online. What would I expect my boyfriend to do?",
-    options: [
-        ["Respect my decision", 4],
-        ["Ask why I prefer privacy", 3],
-        ["Demand that I post him", 1],
-        ["Assume I am hiding him", 2]
-    ]
-},
+q:"I decide not to post our relationship online. What would I expect my boyfriend to do?",
+options:[
+["Respect my decision",4],
+["Ask why I prefer privacy",3],
+["Demand that I post him",1],
+["Assume I am hiding him",2]
+]},
 
 {
-    question: "I want an evening alone instead of spending it with my boyfriend. What would I expect him to do?",
-    options: [
-        ["Respect my need for space", 4],
-        ["Ask if something is wrong", 3],
-        ["Become angry about it", 1],
-        ["Keep asking me to stay", 2]
-    ]
-},
+q:"I want an evening alone instead of spending it with my boyfriend. What would I expect him to do?",
+options:[
+["Respect my need for space",4],
+["Ask if something is wrong",3],
+["Become angry about it",1],
+["Keep asking me to stay",2]
+]},
 
 {
-    question: "I reconnect with an old male friend. What would I expect my boyfriend to do?",
-    options: [
-        ["Ask about the friendship", 3],
-        ["Trust me with the friendship", 4],
-        ["Tell me to cut contact", 1],
-        ["Secretly check our conversations", 2]
-    ]
-},
+q:"I reconnect with an old male friend. What would I expect my boyfriend to do?",
+options:[
+["Ask about the friendship",3],
+["Trust me with the friendship",4],
+["Tell me to cut contact",1],
+["Secretly check our conversations",2]
+]},
 
 {
-    question: "I disagree with one of my boyfriend's relationship boundaries. What would I expect him to do?",
-    options: [
-        ["Discuss a compromise", 4],
-        ["Explain why the boundary matters", 3],
-        ["Expect me to follow it without discussion", 1],
-        ["End the conversation immediately", 2]
-    ]
-},
+q:"I disagree with one of my boyfriend's relationship boundaries. What would I expect him to do?",
+options:[
+["Discuss a compromise",4],
+["Explain why the boundary matters",3],
+["Expect me to follow it without discussion",1],
+["End the conversation immediately",2]
+]},
 
 {
-    question: "I make plans without asking my boyfriend first. What would I expect him to do?",
-    options: [
-        ["Ask me about the plans", 3],
-        ["Respect that I have my own plans", 4],
-        ["Get angry that I did not ask", 1],
-        ["Tell me I should have asked permission", 2]
-    ]
-},
+q:"I make plans without asking my boyfriend first. What would I expect him to do?",
+options:[
+["Ask me about the plans",3],
+["Respect that I have my own plans",4],
+["Get angry that I did not ask",1],
+["Tell me I should have asked permission",2]
+]},
 
 {
-    question: "I tell my boyfriend that I want more independence. What would I expect him to do?",
-    options: [
-        ["Ask what independence means to me", 3],
-        ["Give me more personal freedom", 4],
-        ["Try to limit my activities", 1],
-        ["Assume I want to leave him", 2]
-    ]
-},
+q:"I tell my boyfriend that I want more independence. What would I expect him to do?",
+options:[
+["Ask what independence means to me",3],
+["Give me more personal freedom",4],
+["Try to limit my activities",1],
+["Assume I want to leave him",2]
+]},
 
 {
-    question: "My boyfriend checks my social-media activity without asking. What would I do?",
-    options: [
-        ["Ask why he checked it", 4],
-        ["Let it go without discussing it", 2],
-        ["Set a clear privacy boundary", 3],
-        ["Check his activity in return", 1]
-    ]
-},
+q:"My boyfriend checks my social-media activity without asking. What would I do?",
+options:[
+["Ask why he checked it",4],
+["Let it go without discussing it",2],
+["Set a clear privacy boundary",3],
+["Check his activity in return",1]
+]},
 
 {
-    question: "My boyfriend tells me he does not like one of my male friends. What would I do?",
-    options: [
-        ["Ask what concerns him", 4],
-        ["Stop seeing the friend immediately", 1],
-        ["Explain my side of the friendship", 3],
-        ["Avoid discussing the subject", 2]
-    ]
-},
+q:"My boyfriend tells me he does not like one of my male friends. What would I do?",
+options:[
+["Ask what concerns him",4],
+["Stop seeing the friend immediately",1],
+["Explain my side of the friendship",3],
+["Avoid discussing the subject",2]
+]},
 
 {
-    question: "My boyfriend asks me for my social-media password. What would I do?",
-    options: [
-        ["Give him the password", 1],
-        ["Explain that I value privacy", 4],
-        ["Ask why he needs it", 3],
-        ["Refuse without discussing it", 2]
-    ]
-},
+q:"My boyfriend asks me for my social-media password. What would I do?",
+options:[
+["Give him the password",1],
+["Explain that I value privacy",4],
+["Ask why he needs it",3],
+["Refuse without discussing it",2]
+]},
 
 {
-    question: "My boyfriend repeatedly asks where I am when I go out. What would I do?",
-    options: [
-        ["Tell him my plans", 3],
-        ["Ask why he needs constant updates", 4],
-        ["Stop sharing my plans", 1],
-        ["Become annoyed and ignore him", 2]
-    ]
-},
+q:"My boyfriend repeatedly asks where I am when I go out. What would I do?",
+options:[
+["Tell him my plans",3],
+["Ask why he needs constant updates",4],
+["Stop sharing my plans",1],
+["Become annoyed and ignore him",2]
+]},
 
 {
-    question: "My boyfriend wants me to spend less time with my friends. What would I do?",
-    options: [
-        ["Ask why he feels that way", 4],
-        ["Spend less time with them", 2],
-        ["Explain that friendships matter to me", 3],
-        ["Tell him he cannot control it", 1]
-    ]
-},
+q:"My boyfriend wants me to spend less time with my friends. What would I do?",
+options:[
+["Ask why he feels that way",4],
+["Spend less time with them",2],
+["Explain that friendships matter to me",3],
+["Tell him he cannot control it",1]
+]},
 
 {
-    question: "My boyfriend posts a photo of us without asking me first. What would I do?",
-    options: [
-        ["Ask him to remove it", 2],
-        ["Tell him I prefer being asked first", 4],
-        ["Leave it without saying anything", 1],
-        ["Ask why he posted it", 3]
-    ]
-},
+q:"My boyfriend posts a photo of us without asking me first. What would I do?",
+options:[
+["Ask him to remove it",2],
+["Tell him I prefer being asked first",4],
+["Leave it without saying anything",1],
+["Ask why he posted it",3]
+]},
 
 {
-    question: "My boyfriend wants to know who I am talking to online. What would I do?",
-    options: [
-        ["Tell him generally", 3],
-        ["Ask why he wants to know", 4],
-        ["Show him my conversations", 2],
-        ["Tell him it is none of his business", 1]
-    ]
-},
+q:"My boyfriend wants to know who I am talking to online. What would I do?",
+options:[
+["Tell him generally",3],
+["Ask why he wants to know",4],
+["Show him my conversations",2],
+["Tell him it is none of his business",1]
+]},
 
 {
-    question: "My boyfriend says he needs more freedom in our relationship. What would I do?",
-    options: [
-        ["Ask what freedom means to him", 4],
-        ["Give him more personal space", 3],
-        ["Become worried and question him", 2],
-        ["Try to limit his freedom", 1]
-    ]
-},
+q:"My boyfriend says he needs more freedom in our relationship. What would I do?",
+options:[
+["Ask what freedom means to him",4],
+["Give him more personal space",3],
+["Become worried and question him",2],
+["Try to limit his freedom",1]
+]},
 
 {
-    question: "My boyfriend goes on a trip with his friends without me. What would I do?",
-    options: [
-        ["Trust him and let him enjoy it", 4],
-        ["Ask about the trip", 3],
-        ["Ask him to keep me updated", 2],
-        ["Tell him I do not want him going", 1]
-    ]
-},
+q:"My boyfriend goes on a trip with his friends without me. What would I do?",
+options:[
+["Trust him and let him enjoy it",4],
+["Ask about the trip",3],
+["Ask him to keep me updated",2],
+["Tell him I do not want him going",1]
+]},
 
 {
-    question: "My boyfriend posts something about our relationship that makes me uncomfortable. What would I do?",
-    options: [
-        ["Ask him to remove it", 2],
-        ["Explain why it bothers me", 4],
-        ["Ignore it completely", 1],
-        ["Ask him to discuss posts with me first", 3]
-    ]
-}
+q:"My boyfriend posts something about our relationship that makes me uncomfortable. What would I do?",
+options:[
+["Ask him to remove it",2],
+["Explain why it bothers me",4],
+["Ignore it completely",1],
+["Ask him to discuss posts with me first",3]
+]}
 
 ];
 
 
 /* =========================================================
-   99 EXISTING PARTICIPANTS
-   Only their scores are stored.
-========================================================= */
-
-const existingScores = [
-
-    25,
-    100,
-
-    60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
-    70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
-    80, 81, 82, 83, 84, 85, 86, 87, 88, 89,
-    90, 91, 92, 93, 94, 95, 96, 97, 98,
-
-    60, 62, 64, 66, 68, 70, 72, 74, 76, 78,
-    80, 82, 84, 86, 88, 90, 92, 94, 96, 98,
-
-    61, 63, 65, 67, 69, 71, 73, 75, 77, 79,
-    81, 83, 85, 87, 89, 91, 93, 95, 97,
-
-    64, 67, 70, 73, 76, 79, 82, 85, 88, 91,
-    94, 97, 98, 96, 95, 93, 90, 87, 84
-];
-
-
-/* =========================================================
-   VARIABLES
-========================================================= */
+   QUIZ STATE
+   ========================================================= */
 
 let currentQuestion = 0;
-
 let answers = new Array(questions.length).fill(null);
+let rankingData = [];
 
 
 /* =========================================================
-   PAGE SWITCHING
-========================================================= */
+   NAVIGATION
+   ========================================================= */
 
-function showPage(page) {
+function showPage(pageName) {
 
-    document.getElementById("homePage").style.display = "none";
-    document.getElementById("girlsPage").style.display = "none";
-    document.getElementById("boysPage").style.display = "none";
-    document.getElementById("resultPage").style.display = "none";
+    document.querySelectorAll(".page")
+        .forEach(p => p.classList.remove("active"));
 
-    document.getElementById("homeNav").classList.remove("active");
-    document.getElementById("girlsNav").classList.remove("active");
+    const page = document.getElementById(pageName);
 
-    if (page === "home") {
-
-        document.getElementById("homePage").style.display = "block";
-        document.getElementById("homeNav").classList.add("active");
-
+    if (page) {
+        page.classList.add("active");
     }
 
-    else if (page === "girls") {
+    document.querySelectorAll(".nav-item,.bottom-item")
+        .forEach(item => {
 
-        document.getElementById("girlsPage").style.display = "block";
-        document.getElementById("girlsNav").classList.add("active");
-
-        renderQuestion();
-
-    }
-
-    else if (page === "boys") {
-
-        document.getElementById("boysPage").style.display = "block";
-
-    }
-
-}
-
-
-/* =========================================================
-   START SURVEY
-========================================================= */
-
-function startGirlsSurvey() {
-
-    currentQuestion = 0;
-    answers = new Array(questions.length).fill(null);
-
-    showPage("girls");
-
-}
-
-
-/* =========================================================
-   RENDER QUESTION
-========================================================= */
-
-function renderQuestion() {
-
-    const q = questions[currentQuestion];
-
-    document.getElementById("questionNumber").textContent =
-        "QUESTION " + (currentQuestion + 1);
-
-    document.getElementById("questionText").textContent =
-        q.question;
-
-    document.getElementById("progressQuestion").textContent =
-        "Question " + (currentQuestion + 1) + " of " + questions.length;
-
-    const percent = Math.round(
-        ((currentQuestion + 1) / questions.length) * 100
-    );
-
-    document.getElementById("progressPercent").textContent =
-        percent + "%";
-
-    document.getElementById("progressBar").style.width =
-        percent + "%";
-
-
-    const optionsContainer =
-        document.getElementById("options");
-
-    optionsContainer.innerHTML = "";
-
-
-    q.options.forEach((option, index) => {
-
-        const optionId =
-            "question" + currentQuestion + "_option" + index;
-
-        const wrapper = document.createElement("div");
-
-        wrapper.className = "option";
-
-        wrapper.innerHTML = `
-            <input
-                type="radio"
-                name="question${currentQuestion}"
-                id="${optionId}"
-                value="${option[1]}"
-                ${answers[currentQuestion] === option[1] ? "checked" : ""}
-            >
-
-            <label for="${optionId}">
-                ${option[0]}
-            </label>
-        `;
-
-        optionsContainer.appendChild(wrapper);
-
-
-        const input = wrapper.querySelector("input");
-
-        input.addEventListener("change", function() {
-
-            answers[currentQuestion] =
-                Number(this.value);
+            item.classList.toggle(
+                "active",
+                item.dataset.page === pageName
+            );
 
         });
 
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
     });
 
+    if (pageName === "rankings") {
+        loadRankings();
+    }
+}
 
-    /* BUTTONS */
 
-    document.getElementById("backButton").style.display =
-        currentQuestion === 0 ? "none" : "block";
+/* sidebar + bottom navigation */
 
-    document.getElementById("nextButton").style.display =
-        currentQuestion === questions.length - 1
-            ? "none"
-            : "block";
+document.querySelectorAll(".nav-item,.bottom-item")
+.forEach(item => {
 
-    document.getElementById("submitButton").style.display =
-        currentQuestion === questions.length - 1
-            ? "block"
-            : "none";
+    item.addEventListener("click", () => {
+        showPage(item.dataset.page);
+    });
+
+});
+
+
+/* =========================================================
+   RENDER QUESTIONS
+   ========================================================= */
+
+function renderQuestions() {
+
+    const container =
+        document.getElementById("questions");
+
+    container.innerHTML = "";
+
+    questions.forEach((question,index) => {
+
+        const div = document.createElement("div");
+
+        div.className =
+            "question " +
+            (index === 0 ? "active" : "");
+
+        div.id = "question-" + index;
+
+        let optionsHTML = "";
+
+        question.options.forEach((option,optionIndex) => {
+
+            const letter =
+                String.fromCharCode(65 + optionIndex);
+
+            optionsHTML += `
+                <button
+                    class="option"
+                    data-question="${index}"
+                    data-option="${optionIndex}"
+                    onclick="selectAnswer(${index},${optionIndex})">
+
+                    <span class="option-letter">
+                        ${letter}
+                    </span>
+
+                    <span>${escapeHTML(option[0])}</span>
+
+                </button>
+            `;
+
+        });
+
+        div.innerHTML = `
+
+            <div class="question-number">
+                QUESTION ${index + 1}
+            </div>
+
+            <h2>
+                ${escapeHTML(question.q)}
+            </h2>
+
+            <div class="options">
+                ${optionsHTML}
+            </div>
+        `;
+
+        container.appendChild(div);
+
+    });
+
+    updateQuizUI();
+}
+
+
+/* =========================================================
+   ANSWERS
+   ========================================================= */
+
+function selectAnswer(questionIndex, optionIndex) {
+
+    answers[questionIndex] = optionIndex;
+
+    document
+        .querySelectorAll(
+            `.option[data-question="${questionIndex}"]`
+        )
+        .forEach(option => {
+
+            option.classList.toggle(
+                "selected",
+                Number(option.dataset.option) === optionIndex
+            );
+
+        });
 
 }
 
 
 /* =========================================================
-   NEXT
-========================================================= */
+   QUIZ NAVIGATION
+   ========================================================= */
 
 function nextQuestion() {
 
     if (answers[currentQuestion] === null) {
 
-        alert("Please choose an answer first.");
+        showToast("Please choose an answer first.");
 
         return;
     }
@@ -1052,21 +1615,15 @@ function nextQuestion() {
 
         currentQuestion++;
 
-        renderQuestion();
+        updateQuizUI();
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
+        return;
     }
+
+    submitQuiz();
 
 }
 
-
-/* =========================================================
-   PREVIOUS
-========================================================= */
 
 function previousQuestion() {
 
@@ -1074,85 +1631,217 @@ function previousQuestion() {
 
         currentQuestion--;
 
-        renderQuestion();
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+        updateQuizUI();
 
     }
 
 }
 
 
+function updateQuizUI() {
+
+    document.querySelectorAll(".question")
+        .forEach((q,index) => {
+
+            q.classList.toggle(
+                "active",
+                index === currentQuestion
+            );
+
+        });
+
+    const percent =
+        Math.round(
+            ((currentQuestion + 1) / questions.length) * 100
+        );
+
+    document.getElementById("progressText")
+        .textContent =
+        `Question ${currentQuestion + 1} of ${questions.length}`;
+
+    document.getElementById("progressPercent")
+        .textContent =
+        percent + "%";
+
+    document.getElementById("progressBar")
+        .style.width =
+        percent + "%";
+
+    const prev =
+        document.getElementById("prevBtn");
+
+    prev.style.visibility =
+        currentQuestion === 0
+            ? "hidden"
+            : "visible";
+
+    const next =
+        document.getElementById("nextBtn");
+
+    if (currentQuestion === questions.length - 1) {
+
+        next.innerHTML = `
+            Submit
+            <i data-lucide="check" width="16"></i>
+        `;
+
+    } else {
+
+        next.innerHTML = `
+            Next
+            <i data-lucide="arrow-right" width="16"></i>
+        `;
+
+    }
+
+    lucide.createIcons();
+
+}
+
+
 /* =========================================================
-   CALCULATE SCORE
-========================================================= */
+   SCORE
+   ========================================================= */
 
 function calculateScore() {
 
     let score = 0;
 
-    answers.forEach(answer => {
+    answers.forEach((answer,questionIndex) => {
 
-        score += Number(answer);
+        if (answer !== null) {
 
-    });
+            score +=
+                questions[questionIndex]
+                    .options[answer][1];
 
-    return score;
-
-}
-
-
-/* =========================================================
-   CALCULATE RANK
-========================================================= */
-
-function calculateRank(score) {
-
-    /*
-       Competition ranking:
-
-       Example:
-       100
-       98
-       98
-       95
-
-       ranks:
-       1
-       2
-       2
-       4
-    */
-
-    let rank = 1;
-
-    existingScores.forEach(existingScore => {
-
-        if (existingScore > score) {
-            rank++;
         }
 
     });
 
-    return rank;
+    return score;
+}
+
+
+/* =========================================================
+   SUBMIT TO SUPABASE
+   ========================================================= */
+
+async function submitQuiz() {
+
+    const name =
+        document.getElementById("girlsName")
+            .value.trim();
+
+    if (!name) {
+
+        showToast("Please enter your name.");
+
+        document.getElementById("girlsName").focus();
+
+        return;
+    }
+
+    if (answers.includes(null)) {
+
+        showToast("Please answer every question.");
+
+        return;
+    }
+
+    const score = calculateScore();
+
+    const nextBtn =
+        document.getElementById("nextBtn");
+
+    nextBtn.disabled = true;
+
+    nextBtn.innerHTML = `
+        <i data-lucide="loader-circle"
+           class="spin"
+           width="16"></i>
+        Saving...
+    `;
+
+    lucide.createIcons();
+
+    try {
+
+        /*
+         * Insert the participant first.
+         */
+        const { data, error } =
+            await db
+                .from("quiz_participants")
+                .insert({
+                    name:name,
+                    score:score
+                })
+                .select("id,name,score,created_at")
+                .single();
+
+        if (error) {
+            throw error;
+        }
+
+        /*
+         * Calculate the rank AFTER inserting.
+         *
+         * Because the ranking function counts scores
+         * greater than the submitted score, the participant
+         * gets the correct competition rank.
+         */
+        const { data:rankData, error:rankError } =
+            await db.rpc(
+                "calculate_quiz_rank",
+                {
+                    new_score:score
+                }
+            );
+
+        if (rankError) {
+            throw rankError;
+        }
+
+        showResult(
+            score,
+            Number(rankData)
+        );
+
+        showToast("Your result was saved successfully.");
+
+    } catch(error) {
+
+        console.error(error);
+
+        showToast(
+            "Could not save your result. Check your Supabase setup."
+        );
+
+        nextBtn.disabled = false;
+
+        nextBtn.innerHTML = `
+            Submit
+            <i data-lucide="check" width="16"></i>
+        `;
+
+        lucide.createIcons();
+    }
 
 }
 
 
 /* =========================================================
-   SCORE FEEDBACK
-========================================================= */
+   RESULT
+   ========================================================= */
 
 function getFeedback(score) {
 
     if (score <= 50) {
 
         return {
-            title: "🚩 RED FLAG",
-            message: "Work on yourself 🫶"
+            category:"🚩 RED FLAG",
+            message:"Work on yourself 🫶"
         };
 
     }
@@ -1160,8 +1849,8 @@ function getFeedback(score) {
     if (score <= 60) {
 
         return {
-            title: "🌱 NEEDS WORK",
-            message: "There’s room to grow."
+            category:"🌱 NEEDS WORK",
+            message:"There’s room to grow."
         };
 
     }
@@ -1169,8 +1858,8 @@ function getFeedback(score) {
     if (score <= 70) {
 
         return {
-            title: "💭 MIXED SIGNALS",
-            message: "Some things need attention."
+            category:"💭 MIXED SIGNALS",
+            message:"Some things need attention."
         };
 
     }
@@ -1178,8 +1867,8 @@ function getFeedback(score) {
     if (score <= 80) {
 
         return {
-            title: "💕 PRETTY HEALTHY",
-            message: "Keep growing together."
+            category:"💕 PRETTY HEALTHY",
+            message:"Keep growing together."
         };
 
     }
@@ -1187,8 +1876,8 @@ function getFeedback(score) {
     if (score <= 90) {
 
         return {
-            title: "💗 STRONG ENERGY",
-            message: "You’re doing pretty well."
+            category:"💗 STRONG ENERGY",
+            message:"You’re doing pretty well."
         };
 
     }
@@ -1196,106 +1885,383 @@ function getFeedback(score) {
     if (score <= 99) {
 
         return {
-            title: "✨ GREEN FLAG",
-            message: "Keep it healthy."
+            category:"✨ GREEN FLAG",
+            message:"Keep it healthy."
         };
 
     }
 
     return {
-        title: "👑 PERFECT SCORE",
-        message: "You understood the assignment."
+        category:"👑 PERFECT SCORE",
+        message:"You understood the assignment."
     };
 
 }
 
 
-/* =========================================================
-   SUBMIT
-========================================================= */
+function showResult(score,rank) {
 
-function submitSurvey() {
+    const feedback =
+        getFeedback(score);
 
-    /* Make sure every question is answered */
-
-    const unanswered =
-        answers.some(answer => answer === null);
-
-    if (unanswered) {
-
-        alert("Please answer every question before submitting.");
-
-        return;
-    }
-
-
-    /* Calculate score */
-
-    const score = calculateScore();
-
-
-    /* Calculate rank */
-
-    const rank = calculateRank(score);
-
-
-    /* Feedback */
-
-    const feedback = getFeedback(score);
-
-
-    /* Display result */
-
-    document.getElementById("userRank").textContent =
+    document.getElementById("resultRank")
+        .textContent =
         "#" + rank;
 
-    document.getElementById("userScore").textContent =
-        score + " / 100";
+    document.getElementById("resultScore")
+        .textContent =
+        score;
 
-    document.getElementById("feedbackTitle").textContent =
-        feedback.title;
+    document.getElementById("resultCategory")
+        .textContent =
+        feedback.category;
 
-    document.getElementById("feedbackText").textContent =
+    document.getElementById("resultMessage")
+        .textContent =
         feedback.message;
 
-
-    /* Hide survey */
-
-    document.getElementById("girlsPage").style.display =
+    document.getElementById("girlsQuiz")
+        .style.display =
         "none";
 
-    document.getElementById("homePage").style.display =
-        "none";
-
-    document.getElementById("boysPage").style.display =
-        "none";
-
-
-    /* Hide navigation buttons */
-
-    document.getElementById("homeNav").classList.remove("active");
-    document.getElementById("girlsNav").classList.remove("active");
-
-
-    /* Show result */
-
-    document.getElementById("resultPage").style.display =
-        "block";
-
+    document.getElementById("resultWrap")
+        .classList.add("show");
 
     window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+        top:0,
+        behavior:"smooth"
     });
 
 }
 
 
 /* =========================================================
-   START HOME
-========================================================= */
+   RANKING CATEGORY
+   ========================================================= */
 
-showPage("home");
+function rankingCategory(score) {
+
+    if (score >= 85) {
+        return {
+            key:"keeper",
+            text:"KEEPER"
+        };
+    }
+
+    if (score >= 50) {
+        return {
+            key:"work",
+            text:"NEEDS WORK"
+        };
+    }
+
+    return {
+        key:"red",
+        text:"RED FLAG"
+    };
+
+}
+
+
+/* =========================================================
+   LOAD RANKINGS
+   ========================================================= */
+
+async function loadRankings() {
+
+    const container =
+        document.getElementById("rankingList");
+
+    container.innerHTML = `
+        <div class="loading">
+            <i data-lucide="loader-circle"
+               class="spin"
+               width="20"></i>
+            Loading rankings...
+        </div>
+    `;
+
+    lucide.createIcons();
+
+    try {
+
+        const { data,error } =
+            await db
+                .from("quiz_participants")
+                .select("id,name,score,created_at")
+                .order("score",{
+                    ascending:false
+                })
+                .order("created_at",{
+                    ascending:true
+                });
+
+        if (error) {
+            throw error;
+        }
+
+        rankingData = data || [];
+
+        renderRankings("all");
+
+    } catch(error) {
+
+        console.error(error);
+
+        container.innerHTML = `
+            <div class="empty">
+                Could not load rankings.<br>
+                Check your Supabase table and RLS policies.
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   RENDER RANKINGS
+   ========================================================= */
+
+function renderRankings(filter="all") {
+
+    const container =
+        document.getElementById("rankingList");
+
+    let list = rankingData.slice();
+
+    /*
+     * Ranking is ALWAYS determined by score.
+     * The category only filters the displayed list.
+     */
+
+    if (filter !== "all") {
+
+        list = list.filter(person => {
+
+            return rankingCategory(person.score).key
+                === filter;
+
+        });
+
+    }
+
+    if (!list.length) {
+
+        container.innerHTML = `
+            <div class="empty">
+                No participants in this category yet.
+            </div>
+        `;
+
+        return;
+    }
+
+    let previousScore = null;
+    let currentRank = 0;
+
+    const rows = list.map((person,index) => {
+
+        /*
+         * Competition ranking:
+         *
+         * 100 -> #1
+         * 98  -> #2
+         * 98  -> #2
+         * 97  -> #4
+         *
+         * The ranking is based on the full rankingData,
+         * not the filtered list.
+         */
+
+        let rank = 1;
+
+        if (filter === "all") {
+
+            if (
+                index === 0 ||
+                person.score !== previousScore
+            ) {
+                rank = index + 1;
+                currentRank = rank;
+            } else {
+                rank = currentRank;
+            }
+
+            previousScore = person.score;
+
+        } else {
+
+            /*
+             * Find this person's position in
+             * the complete ranking.
+             */
+
+            const higherScores =
+                rankingData.filter(
+                    p => p.score > person.score
+                ).length;
+
+            rank = higherScores + 1;
+
+        }
+
+        const category =
+            rankingCategory(person.score);
+
+        return `
+            <div class="rank-row">
+
+                <div class="rank-number">
+                    #${rank}
+                </div>
+
+                <div class="rank-name">
+                    ${escapeHTML(person.name)}
+                </div>
+
+                <div class="rank-score">
+                    ${person.score}/100
+                </div>
+
+                <div class="rank-category">
+                    ${category.text}
+                </div>
+
+            </div>
+        `;
+
+    }).join("");
+
+    container.innerHTML = rows;
+
+}
+
+
+/* =========================================================
+   RANKING FILTER
+   ========================================================= */
+
+function filterRanking(filter,button) {
+
+    document.querySelectorAll(".rank-tab")
+        .forEach(tab =>
+            tab.classList.remove("active")
+        );
+
+    button.classList.add("active");
+
+    renderRankings(filter);
+
+}
+
+
+/* =========================================================
+   ADMIN AUTH
+   ========================================================= */
+
+async function adminLogin() {
+
+    const email =
+        document.getElementById("adminEmail")
+            .value.trim();
+
+    const password =
+        document.getElementById("adminPassword")
+            .value;
+
+    if (!email || !password) {
+
+        showToast("Enter your email and password.");
+
+        return;
+    }
+
+    try {
+
+        const { data,error } =
+            await db.auth.signInWithPassword({
+                email,
+                password
+            });
+
+        if (error) {
+            throw error;
+        }
+
+        showToast("Admin login successful.");
+
+        /*
+         * Admin dashboard can be expanded here later.
+         */
+
+    } catch(error) {
+
+        console.error(error);
+
+        showToast(
+            error.message ||
+            "Login failed."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SECURITY / HTML ESCAPING
+   ========================================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer;
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        },3000);
+
+}
+
+
+/* =========================================================
+   INIT
+   ========================================================= */
+
+renderQuestions();
+
+lucide.createIcons();
+
+loadRankings();
 
 </script>
 
